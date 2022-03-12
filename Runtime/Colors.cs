@@ -2,21 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Mixin { 
-public static class Colors
+namespace Mixin
 {
-        public static string ToHex(this Color color) =>
-            $"#{ColorUtility.ToHtmlStringRGB(color)}";
+    public static class Colors
+    {
+        public static string ToHex(this Color color)
+        {
+            return $"#{ColorUtility.ToHtmlStringRGB(color)}";
+        }
 
-        public static Color GetMixinColor() =>
-            Color.red;
+        public static Color GetMixinColor()
+        {
+            return Color.red;
+        }
 
         public static string Colorize(this string text, Color color)
-       => $"<color={color.ToHex()}>{text}</color>";
+        {
+            return $"<color={color.ToHex()}>{text}</color>";
+        }
+
         public static string ColorizeWhite(this string text)
-            => text.Colorize(Color.white);
+        {
+            return text.Colorize(Color.white);
+        }
+
         public static string ColorizeBlack(this string text)
-            => text.Colorize(Color.black);
+        {
+            return text.Colorize(Color.black);
+        }
 
         public static Color SetSaturation(this Color color, float saturation)
         {
