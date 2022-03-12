@@ -2,22 +2,17 @@
   "name": "com.mixin.unity-mixin-utils",
   "version": "1.0.0",
   "displayName": "Unity Mixin Utils",
-  "description": "This is an example package",
-  "unity": "2021.1.22",
-  "unityRelease": "0b5",
-  "documentationUrl": "https://example.com/",
-  "changelogUrl": "https://example.com/changelog.html",
-  "licensesUrl": "https://example.com/licensing.html",
-  "dependencies": {
- },
- "keywords": [
-    "keyword1",
-    "keyword2",
-    "keyword3"
+  "description": "This is the official Unity Mixin Utillities Package. It makes our lifes easier.",
+  "unity": "2021.1",
+  "dependencies": {},
+  "keywords": [
+    "Mixin Games",
+    "Utilities",
+    "Helper"
   ],
   "author": {
-    "name": "Unity",
-    "email": "unity@example.com",
-    "url": "https://www.unity3d.com"
+    "name": "Mixin Games",
+    "email": "public@mixin.ch",
+    "url": "https://mixin.ch"
   }
 }
