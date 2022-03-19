@@ -14,6 +14,7 @@ public class TestProduct : MonoBehaviour
     public string Description { get => _description; }
     public string Name { get => _name; }
     public Currency Currency { get => _currency; }*/
+
 }
 
 [Serializable]
