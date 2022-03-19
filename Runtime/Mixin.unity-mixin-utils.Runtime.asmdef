@@ -1,0 +1,16 @@
+{
+    "name": "UnityMixinUtils",
+    "rootNamespace": "",
+    "references": [
+        "GUID:b708ce3d2362bc049a7fb3b1afb84301"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
