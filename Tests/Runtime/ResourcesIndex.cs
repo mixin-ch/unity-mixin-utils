@@ -1,4 +1,4 @@
-using System.Collections;
+/*using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -110,4 +110,4 @@ public class ResourcesIndex : ScriptableObject
         public string assetPath;
     }
     public List<ResourceAsset> assets;
-}
+}*/
