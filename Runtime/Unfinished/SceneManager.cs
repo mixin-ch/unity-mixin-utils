@@ -17,9 +17,9 @@ namespace Mixin
             return UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
         }
 
-        public static string GetSceneName(SceneList sceneType)
-        {
-            return sceneType.ToString();
-        }
+        //public static string GetSceneName(SceneList sceneType)
+        //{
+        //    return sceneType.ToString();
+        //}
     }
 }
