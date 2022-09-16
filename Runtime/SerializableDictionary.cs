@@ -244,8 +244,8 @@ namespace Mixin.Utils
         {
             System.Collections.Generic.Dictionary<TKey, TValue> dict = new System.Collections.Generic.Dictionary<TKey, TValue>();
 
-            foreach (KeyValuePair<TKey, TValue> pair in this)
-                dict.Add(pair.Key, pair.Value);
+            foreach (TKey key in Keys)
+                dict.Add(key, this[key]);
 
             return dict;
         }
@@ -257,8 +257,8 @@ namespace Mixin.Utils
             if (dictionary == null)
                 return dict;
 
-            foreach (KeyValuePair<TKey, TValue> pair in dictionary)
-                dict.Add(pair.Key, pair.Value);
+            foreach (TKey key in dictionary.Keys)
+                dict.Add(key, dictionary[key]);
 
             return dict;
         }
