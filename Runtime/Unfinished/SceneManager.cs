@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 namespace Mixin
 {
-    public class SceneManager : Singleton
+    public class SceneManager : Singleton<SceneManager>
     {
         public static event Action BeforeSceneLoad;
         public static event Action OnSceneLoaded;

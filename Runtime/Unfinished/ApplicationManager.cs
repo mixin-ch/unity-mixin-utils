@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mixin;
 
-public class ApplicationManager : Singleton
+public class ApplicationManager : Singleton<ApplicationManager>
 {
     public static string GetGameVersion()
         => Application.version;

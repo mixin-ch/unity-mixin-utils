@@ -1,22 +1,55 @@
-using System.Collections;
-using System.Collections.Generic;
+/**
+ * Singleton.cs
+ * Author: Luke Holland (http://lukeholland.me/)
+ */
+
 using UnityEngine;
 
-public class Singleton : MonoBehaviour
+public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 {
-    public static Singleton Instance { get; private set; }
 
+	private static T _instance;
+	private static readonly object _instanceLock = new object();
+	private static bool _quitting = false;
 
-    private void Awake()
-    {
-        // If there is an instance, and it's not me, delete myself.
-        if (Instance == null || Instance == this)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(this);
-        }
-    }
+	public static T Instance
+	{
+		get
+		{
+			lock (_instanceLock)
+			{
+				if (_instance == null && !_quitting)
+				{
+
+					_instance = GameObject.FindObjectOfType<T>();
+					if (_instance == null)
+					{
+						GameObject go = new GameObject(typeof(T).ToString());
+						_instance = go.AddComponent<T>();
+#if !UNITY_EDITOR
+						DontDestroyOnLoad(_instance.gameObject);
+#endif
+					}
+				}
+
+				return _instance;
+			}
+		}
+	}
+
+	protected virtual void Awake()
+	{
+		if (_instance == null) _instance = gameObject.GetComponent<T>();
+		else if (_instance.GetInstanceID() != GetInstanceID())
+		{
+			Destroy(gameObject);
+			throw new System.Exception(string.Format("Instance of {0} already exists, removing {1}", GetType().FullName, ToString()));
+		}
+	}
+
+	protected virtual void OnApplicationQuit()
+	{
+		_quitting = true;
+	}
+
 }

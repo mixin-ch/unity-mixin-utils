@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MainManager : Singleton
+public class MainManager : Singleton<MainManager>
 {
     [SerializeField] private ApplicationManager _applicationManager;
     [SerializeField] private AudioManager _audioManager;

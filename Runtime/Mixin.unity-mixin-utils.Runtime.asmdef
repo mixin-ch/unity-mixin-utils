@@ -1,8 +1,9 @@
 {
-    "name": "UnityMixinUtils",
+    "name": "Mixin.unity-mixin-utils.Runtime",
     "rootNamespace": "",
     "references": [
-        "GUID:b708ce3d2362bc049a7fb3b1afb84301"
+        "GUID:b708ce3d2362bc049a7fb3b1afb84301",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
