@@ -42,7 +42,9 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
 		if (_instance == null) _instance = gameObject.GetComponent<T>();
 		else if (_instance.GetInstanceID() != GetInstanceID())
 		{
+#if !UNITY_EDITOR
 			Destroy(gameObject);
+#endif
 			throw new System.Exception(string.Format("Instance of {0} already exists, removing {1}", GetType().FullName, ToString()));
 		}
 	}
