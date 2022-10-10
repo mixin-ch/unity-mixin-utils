@@ -28,7 +28,9 @@ namespace Mixin.Utils
                             GameObject go = new GameObject(typeof(T).ToString());
                             _instance = go.AddComponent<T>();
 
+#if !UNITY_EDITOR
                             DontDestroyOnLoad(_instance.gameObject);
+#endif
                         }
                     }
 
@@ -42,7 +44,9 @@ namespace Mixin.Utils
             if (_instance == null) _instance = gameObject.GetComponent<T>();
             else if (_instance.GetInstanceID() != GetInstanceID())
             {
-                Destroy(gameObject);
+#if !UNITY_EDITOR
+			    Destroy(gameObject);
+#endif
                 throw new System.Exception(string.Format("Instance of {0} already exists, removing {1}", GetType().FullName, ToString()));
             }
         }
