@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Mixin;
+using Mixin.Utils;
 
 public class ApplicationManager : Singleton<ApplicationManager>
 {
