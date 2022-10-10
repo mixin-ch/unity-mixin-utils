@@ -4,11 +4,8 @@ using UnityEngine.Audio;
 
 namespace Mixin.Utils.Audio
 {
-    public class AudioManager : MonoBehaviour
+    public class AudioManager : Singleton<AudioManager>
     {
-        [HideInInspector]
-        public static AudioManager Instance;
-
         public AudioMixerGroup SoundGroup;
         public AudioMixerGroup MusicGroup;
         public bool Mute;
@@ -17,13 +14,6 @@ namespace Mixin.Utils.Audio
         private List<AudioSource> audioSources = new List<AudioSource>();
         public List<AudioPlaylistPlayer> audioPlaylistPlayers = new List<AudioPlaylistPlayer>();
 
-        private void Awake()
-        {
-            if (Instance == null)
-                Instance = this;
-            else
-                Destroy(gameObject);
-        }
         private void Start()
         {
             DefaultGroup = SoundGroup;
