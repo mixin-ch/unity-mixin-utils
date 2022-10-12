@@ -1,101 +1,36 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.Audio;
 
 namespace Mixin.Utils.Audio
 {
     public class AudioManager : Singleton<AudioManager>
     {
-        private List<AudioSource> _audioSources = new List<AudioSource>();
+        private List<AudioPlayer> _audioPlayers = new List<AudioPlayer>();
         public List<AudioPlaylistPlayer> _audioPlaylistPlayers = new List<AudioPlaylistPlayer>();
 
         void Update()
         {
-            for (int i = 0; i < _audioSources.Count; i++)
+            for (int i = 0; i < _audioPlayers.Count; i++)
             {
-                AudioSource audioSource = _audioSources[i];
-                if (!audioSource.isPlaying)
+                AudioPlayer audioPlayer = _audioPlayers[i];
+                if (!audioPlayer.Running)
                 {
-                    Destroy(audioSource);
-                    _audioSources.RemoveAt(i);
+                    Destroy(audioPlayer.AudioSource);
+                    _audioPlayers.RemoveAt(i);
                     i--;
                 }
             }
 
             for (int i = 0; i < _audioPlaylistPlayers.Count; i++)
-                _audioPlaylistPlayers[i].Tick(Time.deltaTime);
-        }
-
-        public AudioSource Play(AudioSetup audioSetup)
-        {
-            return Play(audioSetup, false);
-        }
-
-        public AudioSource Play(AudioSetup audioSetup, bool loop)
-        {
-            if (audioSetup == null)
-                return null;
-
-            AudioSource audioSource = gameObject.AddComponent<AudioSource>();
-            _audioSources.Add(audioSource);
-            audioSource.clip = audioSetup.AudioClip;
-            audioSource.loop = loop;
-            audioSource.volume = audioSetup.Volume;
-            audioSource.pitch = audioSetup.Pitch;
-            audioSource.outputAudioMixerGroup = audioSetup.AudioMixerGroup;
-
-            if (audioSetup.Pitch < 0)
-                audioSource.time = (audioSetup.AudioClip.length - 0.01f).LowerBound(0);
-
-            audioSource.Play();
-
-            return audioSource;
-        }
-
-        public AudioSetup CreateNewSound(AudioClip audioClip, AudioMixerGroup audioMixerGroup)
-        {
-            AudioSetup audioSetup = new AudioSetup();
-
-            audioSetup.AudioClip = audioClip;
-            audioSetup.Volume = 1;
-            audioSetup.Pitch = 1;
-            audioSetup.AudioMixerGroup = audioMixerGroup;
-
-            return audioSetup;
-        }
-
-        public AudioPlaylistPlayer PlayPlaylist(List<AudioSetup> audioSetupList)
-        {
-            if (audioSetupList == null)
-                return null;
-
-            AudioPlaylistPlayer audioPlaylistPlayer = new AudioPlaylistPlayer();
-            audioPlaylistPlayer.Initialize(audioSetupList);
-            _audioPlaylistPlayers.Add(audioPlaylistPlayer);
-            audioPlaylistPlayer.Start();
-
-            return audioPlaylistPlayer;
-        }
-
-        public AudioPlaylistPlayer FadeInPlayPlaylist(List<AudioSetup> audioSetupList, float fadeTime)
-        {
-            if (audioSetupList == null)
-                return null;
-
-            AudioPlaylistPlayer audioPlaylistPlayer = new AudioPlaylistPlayer();
-            audioPlaylistPlayer.Initialize(audioSetupList);
-            _audioPlaylistPlayers.Add(audioPlaylistPlayer);
-            audioPlaylistPlayer.Start(fadeTime);
-
-            return audioPlaylistPlayer;
+                _audioPlaylistPlayers[i].Tick();
         }
 
         public void StopAllAudio()
         {
-            while (_audioSources.Count > 0)
+            while (_audioPlayers.Count > 0)
             {
-                Destroy(_audioSources[0]);
-                _audioSources.RemoveAt(0);
+                Destroy(_audioPlayers[0].AudioSource);
+                _audioPlayers.RemoveAt(0);
             }
 
             while (_audioPlaylistPlayers.Count > 0)
@@ -105,8 +40,52 @@ namespace Mixin.Utils.Audio
             }
         }
 
-        public void Remove(AudioPlaylistPlayer audioPlaylistPlayer)
+        public AudioPlayer Play(AudioSetup audioSetup)
         {
+            return Play(audioSetup, false);
+        }
+
+        public AudioPlayer Play(AudioSetup audioSetup, bool loop)
+        {
+            if (audioSetup == null)
+                return null;
+
+            AudioSource audioSource = gameObject.AddComponent<AudioSource>();
+            AudioPlayer audioPlayer = AudioPlayer.Create(audioSource, audioSetup, loop);
+            audioPlayer.Play();
+            _audioPlayers.Add(audioPlayer);
+
+            return audioPlayer;
+        }
+
+        public AudioPlaylistPlayer MakePlaylist(List<AudioSetup> audioSetups)
+        {
+            if (audioSetups == null)
+                return null;
+
+            AudioPlaylistPlayer audioPlaylistPlayer = AudioPlaylistPlayer.Create(audioSetups);
+            _audioPlaylistPlayers.Add(audioPlaylistPlayer);
+
+            return audioPlaylistPlayer;
+        }
+
+        public AudioPlaylistPlayer PlayPlaylist(List<AudioSetup> audioSetups)
+        {
+            AudioPlaylistPlayer audioPlaylistPlayer = MakePlaylist(audioSetups);
+
+            if (audioPlaylistPlayer != null)
+                audioPlaylistPlayer.Play();
+
+            return audioPlaylistPlayer;
+        }
+
+
+        public void RemovePlaylist(AudioPlaylistPlayer audioPlaylistPlayer)
+        {
+            if (audioPlaylistPlayer == null)
+                return;
+
+            audioPlaylistPlayer.Stop();
             _audioPlaylistPlayers.Remove(audioPlaylistPlayer);
         }
     }

@@ -1,143 +1,63 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
 
 namespace Mixin.Utils.Audio
 {
     public class AudioPlaylistPlayer
     {
-        private float overallPitch = 1;
+        public List<AudioSetup> AudioSetups { get; private set; }
 
-        private List<AudioSetup> audioSetupList;
-        private AudioSetup audioSetup;
-        private AudioSource audioSource;
-        private List<AudioSetup> audioSetupListToPlay;
+        public bool Running { get; private set; }
 
-        private bool isInitialized = false;
-        private bool isActive = false;
+        private List<AudioSetup> _audioSetupListToPlay;
+        private AudioPlayer _currentAudioPlayer;
 
-        private bool fadingIn = false;
-        private bool fadingOut = false;
-        private float fadeTime = 0;
-        private float fade = 0;
-
-        public void Initialize(List<AudioSetup> audioSetupList)
+        public static AudioPlaylistPlayer Create(List<AudioSetup> audioSetups)
         {
-            this.audioSetupList = audioSetupList;
-            isInitialized = true;
+            AudioPlaylistPlayer audioPlaylistPlayer = new AudioPlaylistPlayer();
+            audioPlaylistPlayer.AudioSetups = audioSetups;
+            return audioPlaylistPlayer;
         }
 
-        public void Tick(float time)
+        public void Tick()
         {
-            if (!isActive)
+            if (!Running)
                 return;
-            if (!audioSource.isPlaying)
-            {
-                Play();
-            }
+            if (_currentAudioPlayer != null && _currentAudioPlayer.Running)
+                return;
 
-            if (fadingIn)
-            {
-                fade = Mathf.Min(1, fade + time / fadeTime);
-                audioSource.volume = audioSetup.Volume * fade;
+            if (_audioSetupListToPlay.Count == 0)
+                RefreshAudioClipsToPlay();
 
-                if (fade == 1)
-                    fadingIn = false;
-            }
-
-            if (fadingOut)
-            {
-                fade = Mathf.Max(0, fade - time / fadeTime);
-                audioSource.volume = audioSetup.Volume * fade;
-
-                if (fade == 0)
-                {
-                    fadingOut = false;
-                    Destroy();
-                }
-            }
+            AudioSetup audioSetup = _audioSetupListToPlay[0];
+            _audioSetupListToPlay.RemoveAt(0);
+            _currentAudioPlayer = AudioManager.Instance.Play(audioSetup, false);
         }
 
-        public void Start()
+        public void Play()
         {
-            if (!isInitialized)
+            if (Running)
                 return;
-            refreshAudioClipsToPlay();
-            Play();
-        }
 
-        public void Start(float fadeTime)
-        {
-            if (!isInitialized)
-                return;
-            refreshAudioClipsToPlay();
-            fadeIn(fadeTime);
+            Running = true;
+            Tick();
         }
 
         public void Stop()
         {
-            isActive = false;
-            if (audioSource == null)
-                return;
-            audioSource.Stop();
-        }
-
-        private void Play()
-        {
-            Stop();
-            if (audioSetupListToPlay.Count == 0)
-                refreshAudioClipsToPlay();
-
-            audioSetup = audioSetupListToPlay[0];
-            audioSetupListToPlay.RemoveAt(0);
-            AudioSetup adjustedAudioSetup = audioSetup.Copy();
-            adjustedAudioSetup.Pitch *= overallPitch;
-            audioSource = AudioManager.Instance.Play(audioSetup, false);
-            isActive = true;
-        }
-
-        public void SetOverallPitch(float pitch)
-        {
-            overallPitch = pitch;
-            refreshCurrentAudio();
-        }
-
-        private void refreshCurrentAudio()
-        {
-            if (audioSetup == null)
-                return;
-            if (audioSource == null)
+            if (!Running)
                 return;
 
-            audioSource.pitch = audioSetup.Pitch * overallPitch;
+            if (_currentAudioPlayer == null)
+                return;
+
+            _currentAudioPlayer.Stop();
+            Running = false;
         }
 
-        private void fadeIn(float fadeTime)
+        private void RefreshAudioClipsToPlay()
         {
-            fadingIn = true;
-            fadingOut = false;
-            fade = 0;
-            this.fadeTime = fadeTime;
-            Play();
-        }
-
-        public void FadeOut(float fadeTime)
-        {
-            fadingIn = false;
-            fadingOut = true;
-            fade = 1;
-            this.fadeTime = fadeTime;
-        }
-
-        public void Destroy()
-        {
-            Stop();
-            AudioManager.Instance.Remove(this);
-        }
-
-        private void refreshAudioClipsToPlay()
-        {
-            audioSetupListToPlay = new List<AudioSetup>(audioSetupList);
-            audioSetupListToPlay.Shuffle(new System.Random());
+            _audioSetupListToPlay = new List<AudioSetup>(AudioSetups);
+            _audioSetupListToPlay.Shuffle(new System.Random());
         }
     }
 }
