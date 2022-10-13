@@ -13,6 +13,8 @@ namespace Mixin.Utils.Audio
             for (int i = 0; i < _audioPlayers.Count; i++)
             {
                 AudioPlayer audioPlayer = _audioPlayers[i];
+                audioPlayer.Tick(Time.deltaTime);
+
                 if (!audioPlayer.Running)
                 {
                     Destroy(audioPlayer.AudioSource);
