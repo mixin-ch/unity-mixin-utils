@@ -15,7 +15,7 @@ namespace Mixin.Utils.Audio
             return audioPlaylistPlayer;
         }
 
-        private List<AudioClipSetupSO> _audioClipsToPlay = new List<AudioClipSetupSO>();
+        private List<AudioClipSetup> _audioClipsToPlay = new List<AudioClipSetup>();
         private AudioClipPlayer _currentAudioClipPlayer;
 
         public void Tick()
@@ -47,9 +47,9 @@ namespace Mixin.Utils.Audio
             if (_audioClipsToPlay.Count == 0)
                 RefreshAudioClipsToPlay();
 
-            AudioClipSetupSO audioClipSetupSO = _audioClipsToPlay[0];
+            AudioClipSetup audioClipSetup = _audioClipsToPlay[0];
             _audioClipsToPlay.RemoveAt(0);
-            _currentAudioClipPlayer = AudioManager.Instance.Play(audioClipSetupSO, AudioPlaylistSetupSO);
+            _currentAudioClipPlayer = AudioManager.Instance.Play(audioClipSetup, AudioPlaylistSetupSO);
         }
 
         public void Stop()
@@ -66,7 +66,7 @@ namespace Mixin.Utils.Audio
 
         private void RefreshAudioClipsToPlay()
         {
-            _audioClipsToPlay = new List<AudioClipSetupSO>(AudioPlaylistSetupSO.AudioClipSetupSOs);
+            _audioClipsToPlay = new List<AudioClipSetup>(AudioPlaylistSetupSO.AudioClipSetups);
 
             if (AudioPlaylistSetupSO.Shuffle)
                 _audioClipsToPlay.Shuffle(new System.Random());

@@ -154,6 +154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AudioClip: {fileID: 11400000, guid: 93c93d497b2d06c48800a2a00ef3e64e, type: 2}
+  AudioClip2: {fileID: 8300000, guid: e203be36a9b691b4c8deed93a8adce07, type: 3}
   AudioPlaylist: {fileID: 11400000, guid: 79ae7a9106341b04193a21eaecd9726d, type: 2}
 --- !u!114 &1915627132
 MonoBehaviour:

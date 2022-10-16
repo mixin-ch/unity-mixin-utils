@@ -1,26 +1,43 @@
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Audio;
 
 namespace Mixin.Utils.Audio
 {
-    [CreateAssetMenu(fileName = "AudioClipSetup", menuName = "Mixin/Audio/AudioClipSetupSO")]
+    [CreateAssetMenu(fileName = "AudioClipSetupSO", menuName = "Mixin/Audio/AudioClipSetupSO")]
     [System.Serializable]
     public class AudioClipSetupSO : ScriptableObject
     {
-        public AudioClip AudioClip;
-        public AudioMixerGroup AudioMixerGroup;
+        [SerializeField]
+        private AudioClip _audioClip;
+        [SerializeField]
+        private AudioMixerGroup _audioMixerGroup;
+        [SerializeField]
         [Range(0, 1)]
-        public float Volume = 1;
-        public float Pitch = 1;
-        public bool Loop;
+        private float _volume = 1;
+        [SerializeField]
+        private float _pitch = 1;
+        [SerializeField]
+        private bool _loop;
+        [SerializeField]
         [Min(0)]
-        public float FadeInDuration;
+        private float _fadeInDuration;
+        [SerializeField]
         [Min(0)]
-        public float FadeOutDuration;
+        private float _fadeOutDuration;
 
-        public bool FadeIn => FadeInDuration > 0;
-        public bool FadeOut => FadeOutDuration > 0;
-        public bool Fade => FadeIn || FadeOut;
+        public AudioClipSetup ToAudioClipSetup()
+        {
+            AudioClipSetup audioClipSetup = new AudioClipSetup();
+
+            audioClipSetup.AudioClip = _audioClip;
+            audioClipSetup.AudioMixerGroup = _audioMixerGroup;
+            audioClipSetup.Volume = _volume;
+            audioClipSetup.Pitch = _pitch;
+            audioClipSetup.Loop = _loop;
+            audioClipSetup.FadeInDuration = _fadeInDuration;
+            audioClipSetup.FadeOutDuration = _fadeOutDuration;
+
+            return audioClipSetup;
+        }
     }
 }

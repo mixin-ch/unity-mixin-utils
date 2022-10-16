@@ -9,13 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c587a019d32e8fe429c79c3d85af1d73, type: 3}
+  m_Script: {fileID: 11500000, guid: d8db054b649fb834d8306950cac526fd, type: 3}
   m_Name: Assault
   m_EditorClassIdentifier: 
-  AudioClip: {fileID: 8300000, guid: 974beff08ae5cef4aab215d8d4236137, type: 3}
-  AudioMixerGroup: {fileID: 111281722760495013, guid: 3529529bdc070ac4f82c8fd364d2dc4c, type: 2}
-  Volume: 1
-  Pitch: 1
-  Loop: 0
-  FadeInDuration: 0
-  FadeOutDuration: 1
+  _audioClip: {fileID: 8300000, guid: 974beff08ae5cef4aab215d8d4236137, type: 3}
+  _audioMixerGroup: {fileID: 111281722760495013, guid: 3529529bdc070ac4f82c8fd364d2dc4c, type: 2}
+  _volume: 1
+  _pitch: 1
+  _loop: 0
+  _fadeInDuration: 0
+  _fadeOutDuration: 1
