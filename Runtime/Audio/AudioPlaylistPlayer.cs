@@ -4,19 +4,19 @@ namespace Mixin.Utils.Audio
 {
     public class AudioPlaylistPlayer
     {
-        public List<AudioSetup> AudioSetups { get; private set; }
+        public AudioPlaylistSetup AudioPlaylistSetup { get; private set; }
 
         public bool Running { get; private set; }
 
-        private List<AudioSetup> _audioSetupListToPlay;
-        private AudioPlayer _currentAudioPlayer;
-
-        public static AudioPlaylistPlayer Create(List<AudioSetup> audioSetups)
+        public static AudioPlaylistPlayer Create(AudioPlaylistSetup audioPlaylistSetup)
         {
             AudioPlaylistPlayer audioPlaylistPlayer = new AudioPlaylistPlayer();
-            audioPlaylistPlayer.AudioSetups = audioSetups;
+            audioPlaylistPlayer.AudioPlaylistSetup = audioPlaylistSetup;
             return audioPlaylistPlayer;
         }
+
+        private List<AudioSetup> _audioSetupListToPlay = new List<AudioSetup>();
+        private AudioPlayer _currentAudioPlayer;
 
         public void Tick()
         {
@@ -24,6 +24,25 @@ namespace Mixin.Utils.Audio
                 return;
             if (_currentAudioPlayer != null && _currentAudioPlayer.Running)
                 return;
+            if (!AudioPlaylistSetup.Automatic)
+            {
+                Running = false;
+                return;
+            }
+
+            PlayTrack();
+        }
+
+        public void Play()
+        {
+            Running = true;
+            PlayTrack();
+        }
+
+        private void PlayTrack()
+        {
+            if (_currentAudioPlayer != null && _currentAudioPlayer.Running)
+                _currentAudioPlayer.Stop();
 
             if (_audioSetupListToPlay.Count == 0)
                 RefreshAudioClipsToPlay();
@@ -31,15 +50,6 @@ namespace Mixin.Utils.Audio
             AudioSetup audioSetup = _audioSetupListToPlay[0];
             _audioSetupListToPlay.RemoveAt(0);
             _currentAudioPlayer = AudioManager.Instance.Play(audioSetup);
-        }
-
-        public void Play()
-        {
-            if (Running)
-                return;
-
-            Running = true;
-            Tick();
         }
 
         public void Stop()
@@ -56,8 +66,10 @@ namespace Mixin.Utils.Audio
 
         private void RefreshAudioClipsToPlay()
         {
-            _audioSetupListToPlay = new List<AudioSetup>(AudioSetups);
-            _audioSetupListToPlay.Shuffle(new System.Random());
+            _audioSetupListToPlay = AudioPlaylistSetup.GenerateAudioSetups();
+
+            if (AudioPlaylistSetup.Shuffle)
+                _audioSetupListToPlay.Shuffle(new System.Random());
         }
     }
 }

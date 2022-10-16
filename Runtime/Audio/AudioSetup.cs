@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -20,5 +21,23 @@ namespace Mixin.Utils.Audio
         public bool FadeIn => FadeInDuration > 0;
         public bool FadeOut => FadeOutDuration > 0;
         public bool Fade => FadeIn || FadeOut;
+
+        public static List<AudioSetup> GenerateAudioSetups(AudioPlaylistSetup audioPlaylistSetup)
+        {
+            List<AudioSetup> audioSetups = new List<AudioSetup>();
+
+            foreach (AudioClip audioClip in audioPlaylistSetup.AudioClips)
+            {
+                AudioSetup audioSetup = new AudioSetup();
+                audioSetup.AudioClip = audioClip;
+                audioSetup.Volume = audioPlaylistSetup.Volume;
+                audioSetup.Pitch = audioPlaylistSetup.Pitch;
+                audioSetup.FadeInDuration = audioPlaylistSetup.FadeInDuration;
+                audioSetup.FadeOutDuration = audioPlaylistSetup.FadeOutDuration;
+                audioSetups.Add(audioSetup);
+            }
+
+            return audioSetups;
+        }
     }
 }

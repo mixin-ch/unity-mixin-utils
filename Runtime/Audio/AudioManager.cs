@@ -55,20 +55,20 @@ namespace Mixin.Utils.Audio
             return audioPlayer;
         }
 
-        public AudioPlaylistPlayer MakePlaylist(List<AudioSetup> audioSetups)
+        public AudioPlaylistPlayer MakePlaylist(AudioPlaylistSetup audioPlaylistSetup)
         {
-            if (audioSetups == null)
+            if (audioPlaylistSetup == null)
                 return null;
 
-            AudioPlaylistPlayer audioPlaylistPlayer = AudioPlaylistPlayer.Create(audioSetups);
+            AudioPlaylistPlayer audioPlaylistPlayer = AudioPlaylistPlayer.Create(audioPlaylistSetup);
             _audioPlaylistPlayers.Add(audioPlaylistPlayer);
 
             return audioPlaylistPlayer;
         }
 
-        public AudioPlaylistPlayer PlayPlaylist(List<AudioSetup> audioSetups)
+        public AudioPlaylistPlayer Play(AudioPlaylistSetup audioPlaylistSetup)
         {
-            AudioPlaylistPlayer audioPlaylistPlayer = MakePlaylist(audioSetups);
+            AudioPlaylistPlayer audioPlaylistPlayer = MakePlaylist(audioPlaylistSetup);
 
             if (audioPlaylistPlayer != null)
                 audioPlaylistPlayer.Play();
