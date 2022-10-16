@@ -6,37 +6,39 @@ namespace Mixin.Utils.Audio
     {
         public AudioSource AudioSource { get; private set; }
         public AudioSetup AudioSetup { get; private set; }
-        public bool Loop { get; private set; }
 
         public FadeState FadeState { get; private set; } = FadeState.Inactive;
-        public bool Running => FadeState != FadeState.Inactive;
+        public bool Running => AudioSource.isPlaying;
 
         private float _fadeDuration;
         private float _time;
 
-        public static AudioPlayer Create(AudioSource audioSource, AudioSetup audioSetup, bool loop)
+        public static AudioPlayer Create(AudioSource audioSource, AudioSetup audioSetup)
         {
             AudioPlayer audioPlayer = new AudioPlayer();
             audioPlayer.AudioSource = audioSource;
             audioPlayer.AudioSetup = audioSetup;
-            audioPlayer.Loop = loop;
             return audioPlayer;
-        }
-
-        public static AudioPlayer Create(AudioSource audioSource, AudioSetup audioSetup)
-        {
-            return Create(audioSource, audioSetup, false);
         }
 
         public void Tick(float time)
         {
-            if (!Running)
+            if (FadeState == FadeState.Inactive)
                 return;
 
             if (FadeState == FadeState.Active)
-                return;
+            {
+                if (AudioSetup.FadeOut && AudioSource.time + AudioSetup.FadeOutDuration >= AudioSetup.AudioClip.length)
+                {
+                    FadeState = FadeState.FadeOut;
+                    _fadeDuration = AudioSetup.FadeOutDuration;
+                    _time = 0;
+                }
 
-            _time += time;
+                return;
+            }
+            else
+                _time += time;
 
             if (FadeState == FadeState.FadeIn)
             {
@@ -49,16 +51,39 @@ namespace Mixin.Utils.Audio
             {
                 if (_time > _fadeDuration)
                     Stop();
+
+                AudioSource.volume = GetVolume();
             }
         }
 
         public void Play()
         {
-            FadeState = FadeState.Active;
-            _fadeDuration = 0;
+            if (AudioSetup.FadeIn)
+            {
+                FadeState = FadeState.FadeIn;
+                _fadeDuration = AudioSetup.FadeInDuration;
+            }
+            else
+            {
+                FadeState = FadeState.Active;
+                _fadeDuration = 0;
+            }
+
             _time = 0;
 
-            SetupClip();
+            AudioSource.clip = AudioSetup.AudioClip;
+            AudioSource.loop = AudioSetup.Loop;
+            AudioSource.volume = GetVolume();
+            AudioSource.pitch = AudioSetup.Pitch;
+            AudioSource.outputAudioMixerGroup = AudioSetup.AudioMixerGroup;
+
+            if (AudioSetup.Pitch < 0)
+                AudioSource.time = (AudioSetup.AudioClip.length - 0.01f).LowerBound(0);
+            else
+                AudioSource.time = 0;
+
+
+            AudioSource.Play();
         }
 
         public void Stop()
@@ -70,44 +95,19 @@ namespace Mixin.Utils.Audio
             AudioSource.Stop();
         }
 
-        public void FadeIn(float fadeDuration)
-        {
-            FadeState = FadeState.FadeIn;
-            _fadeDuration = fadeDuration;
-            _time = 0;
-
-            SetupClip();
-        }
-
         public void FadeOut(float fadeDuration)
         {
+            if (FadeState != FadeState.Active)
+                return;
+
             FadeState = FadeState.FadeOut;
             _fadeDuration = fadeDuration;
             _time = 0;
-
-            SetupClip();
-        }
-
-        private void SetupClip()
-        {
-            if (!Running)
-                return;
-
-            AudioSource.clip = AudioSetup.AudioClip;
-            AudioSource.loop = Loop;
-            AudioSource.volume = GetVolume();
-            AudioSource.pitch = AudioSetup.Pitch;
-            AudioSource.outputAudioMixerGroup = AudioSetup.AudioMixerGroup;
-
-            if (AudioSetup.Pitch < 0)
-                AudioSource.time = (AudioSetup.AudioClip.length - 0.01f).LowerBound(0);
-
-            AudioSource.Play();
         }
 
         private float GetVolume()
         {
-            if (!Running)
+            if (FadeState == FadeState.Inactive)
                 return 0;
 
             float volume = AudioSetup.Volume;

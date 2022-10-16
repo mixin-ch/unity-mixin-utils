@@ -30,7 +30,7 @@ namespace Mixin.Utils.Audio
 
             AudioSetup audioSetup = _audioSetupListToPlay[0];
             _audioSetupListToPlay.RemoveAt(0);
-            _currentAudioPlayer = AudioManager.Instance.Play(audioSetup, false);
+            _currentAudioPlayer = AudioManager.Instance.Play(audioSetup);
         }
 
         public void Play()

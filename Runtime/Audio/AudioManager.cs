@@ -44,16 +44,11 @@ namespace Mixin.Utils.Audio
 
         public AudioPlayer Play(AudioSetup audioSetup)
         {
-            return Play(audioSetup, false);
-        }
-
-        public AudioPlayer Play(AudioSetup audioSetup, bool loop)
-        {
             if (audioSetup == null)
                 return null;
 
             AudioSource audioSource = gameObject.AddComponent<AudioSource>();
-            AudioPlayer audioPlayer = AudioPlayer.Create(audioSource, audioSetup, loop);
+            AudioPlayer audioPlayer = AudioPlayer.Create(audioSource, audioSetup);
             audioPlayer.Play();
             _audioPlayers.Add(audioPlayer);
 
