@@ -112,10 +112,10 @@ namespace Mixin.Utils.Audio
             float audioLength = AudioClipSetup.AudioClip.length;
             float audioTime = AudioSource.time;
 
-            if (AudioClipSetup.FadeIn && audioTime <= AudioClipSetup.FadeInDuration)
-                volume *= (audioTime / AudioClipSetup.FadeInDuration).Between(0, 1);
-            if (AudioClipSetup.FadeOut && audioTime + AudioClipSetup.FadeOutDuration >= audioLength)
-                volume *= ((audioLength - audioTime) / AudioClipSetup.FadeOutDuration).Between(0, 1);
+            if (AudioClipSetup.StartFade && audioTime <= AudioClipSetup.StartFadeDuration)
+                volume *= (audioTime / AudioClipSetup.StartFadeDuration).Between(0, 1);
+            if (AudioClipSetup.EndFade && audioTime + AudioClipSetup.EndFadeDuration >= audioLength)
+                volume *= ((audioLength - audioTime) / AudioClipSetup.EndFadeDuration).Between(0, 1);
 
             if (AudioPlaylistSetup != null)
             {
@@ -133,8 +133,8 @@ namespace Mixin.Utils.Audio
         public AudioMixerGroup AudioMixerGroup => AudioPlaylistSetup?.AudioMixerGroup ?? AudioClipSetup.AudioMixerGroup;
         public float Volume => AudioClipSetup.Volume * (AudioPlaylistSetup?.Volume ?? 1);
         public float Pitch => AudioClipSetup.Pitch * (AudioPlaylistSetup?.Pitch ?? 1);
-        public bool FadeIn => AudioClipSetup.FadeIn || (AudioPlaylistSetup?.FadeIn ?? false);
-        public bool FadeOut => AudioClipSetup.FadeOut || (AudioPlaylistSetup?.FadeOut ?? false);
+        public bool FadeIn => AudioClipSetup.StartFade || (AudioPlaylistSetup?.FadeIn ?? false);
+        public bool FadeOut => AudioClipSetup.EndFade || (AudioPlaylistSetup?.FadeOut ?? false);
         public bool Fade => FadeIn || FadeOut;
         public bool PlaylistStopping => AudioPlaylistPlayer?.Stopping ?? false;
         public bool FadeOrStop => Fade || _stopping || PlaylistStopping;
