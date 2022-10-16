@@ -9,18 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5b9f85603e71b1439906148650b7110, type: 3}
+  m_Script: {fileID: 11500000, guid: 4747f592fb27a1448b8d11f6c14f9ce3, type: 3}
   m_Name: Sounds
   m_EditorClassIdentifier: 
-  Automatic: 1
-  Shuffle: 1
-  AudioMixerGroup: {fileID: 111281722760495013, guid: 3529529bdc070ac4f82c8fd364d2dc4c, type: 2}
-  Volume: 1
-  Pitch: 1
-  FadeInDuration: 0
-  FadeOutDuration: 0
-  AudioClipSetupSOs:
+  _automatic: 1
+  _shuffle: 1
+  _audioMixerGroup: {fileID: 111281722760495013, guid: 3529529bdc070ac4f82c8fd364d2dc4c, type: 2}
+  _volume: 1
+  _pitch: 1.5
+  _fadeInDuration: 1
+  _fadeOutDuration: 1
+  _audioClipSetups:
   - {fileID: 11400000, guid: 93c93d497b2d06c48800a2a00ef3e64e, type: 2}
-  - {fileID: 11400000, guid: f3ea4296a5cf78849840d0d6d5174911, type: 2}
-  - {fileID: 11400000, guid: c5306cc8104be594eb23bc7faf02a1ca, type: 2}
-  - {fileID: 11400000, guid: 09c7290770d56db459e37c8aa028e72d, type: 2}
+  - {fileID: 11400000, guid: d4156cc700340e8488db68983e903248, type: 2}
+  - {fileID: 11400000, guid: d8e25ea3fb8379e4883799f1fa58c47a, type: 2}
+  - {fileID: 11400000, guid: b01d267716ef8ad49a13724e1f097666, type: 2}

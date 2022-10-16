@@ -47,33 +47,33 @@ namespace Mixin.Utils.Audio
             return Play(audioClipSetup, null);
         }
 
-        public AudioClipPlayer Play(AudioClipSetup audioClipSetup, AudioPlaylistSetupSO audioPlaylistSetupSO)
+        public AudioClipPlayer Play(AudioClipSetup audioClipSetup, AudioPlaylistSetup audioPlaylistSetup)
         {
             if (audioClipSetup == null)
                 return null;
 
             AudioSource audioSource = gameObject.AddComponent<AudioSource>();
-            AudioClipPlayer audioClipPlayer = AudioClipPlayer.Create(audioSource, audioClipSetup, audioPlaylistSetupSO);
+            AudioClipPlayer audioClipPlayer = AudioClipPlayer.Create(audioSource, audioClipSetup, audioPlaylistSetup);
             audioClipPlayer.Play();
             _audioClipPlayers.Add(audioClipPlayer);
 
             return audioClipPlayer;
         }
 
-        public AudioPlaylistPlayer MakePlaylist(AudioPlaylistSetupSO audioPlaylistSetupSO)
+        public AudioPlaylistPlayer MakePlaylist(AudioPlaylistSetup audioPlaylistSetup)
         {
-            if (audioPlaylistSetupSO == null)
+            if (audioPlaylistSetup == null)
                 return null;
 
-            AudioPlaylistPlayer audioPlaylistPlayer = AudioPlaylistPlayer.Create(audioPlaylistSetupSO);
+            AudioPlaylistPlayer audioPlaylistPlayer = AudioPlaylistPlayer.Create(audioPlaylistSetup);
             _audioPlaylistPlayers.Add(audioPlaylistPlayer);
 
             return audioPlaylistPlayer;
         }
 
-        public AudioPlaylistPlayer Play(AudioPlaylistSetupSO audioPlaylistSetupSO)
+        public AudioPlaylistPlayer Play(AudioPlaylistSetup audioPlaylistSetup)
         {
-            AudioPlaylistPlayer audioPlaylistPlayer = MakePlaylist(audioPlaylistSetupSO);
+            AudioPlaylistPlayer audioPlaylistPlayer = MakePlaylist(audioPlaylistSetup);
 
             if (audioPlaylistPlayer != null)
                 audioPlaylistPlayer.Play();

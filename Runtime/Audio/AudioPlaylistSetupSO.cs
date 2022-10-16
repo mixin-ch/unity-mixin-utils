@@ -8,22 +8,48 @@ namespace Mixin.Utils.Audio
     [System.Serializable]
     public class AudioPlaylistSetupSO : ScriptableObject
     {
-        public bool Automatic;
-        public bool Shuffle;
+        [SerializeField]
+        private bool _automatic;
+        [SerializeField]
+        private bool _shuffle;
 
-        public AudioMixerGroup AudioMixerGroup;
+        [SerializeField]
+        private AudioMixerGroup _audioMixerGroup;
+        [SerializeField]
         [Range(0, 1)]
-        public float Volume = 1;
-        public float Pitch = 1;
+        private float _volume = 1;
+        [SerializeField]
+        private float _pitch = 1;
+        [SerializeField]
         [Min(0)]
-        public float FadeInDuration;
+        private float _fadeInDuration;
+        [SerializeField]
         [Min(0)]
-        public float FadeOutDuration;
+        private float _fadeOutDuration;
 
-        public List<AudioClipSetup> AudioClipSetups;
+        [SerializeField]
+        private List<AudioClipSetupSO> _audioClipSetups;
 
-        public bool FadeIn => FadeInDuration > 0;
-        public bool FadeOut => FadeOutDuration > 0;
-        public bool Fade => FadeIn || FadeOut;
+        public AudioPlaylistSetup ToAudioPlaylistSetup()
+        {
+            AudioPlaylistSetup audioPlaylistSetup = new AudioPlaylistSetup();
+
+            audioPlaylistSetup.Automatic = _automatic;
+            audioPlaylistSetup.Shuffle = _shuffle;
+            audioPlaylistSetup.AudioMixerGroup = _audioMixerGroup;
+            audioPlaylistSetup.Volume = _volume;
+            audioPlaylistSetup.Pitch = _pitch;
+            audioPlaylistSetup.FadeInDuration = _fadeInDuration;
+            audioPlaylistSetup.FadeOutDuration = _fadeOutDuration;
+
+            List<AudioClipSetup> audioClipSetups = new List<AudioClipSetup>();
+
+            foreach (AudioClipSetupSO audioClipSetupSO in _audioClipSetups)
+                audioClipSetups.Add(audioClipSetupSO.ToAudioClipSetup());
+
+            audioPlaylistSetup.AudioClipSetups = audioClipSetups;
+
+            return audioPlaylistSetup;
+        }
     }
 }

@@ -7,7 +7,7 @@ namespace Mixin.Utils.Audio
     {
         public AudioSource AudioSource { get; private set; }
         public AudioClipSetup AudioClipSetup { get; private set; }
-        public AudioPlaylistSetupSO AudioPlaylistSetupSO { get; private set; }
+        public AudioPlaylistSetup AudioPlaylistSetup { get; private set; }
 
         public bool Running => AudioSource != null && AudioSource.isPlaying;
 
@@ -20,12 +20,12 @@ namespace Mixin.Utils.Audio
             return Create(audioSource, audioClipSetup, null);
         }
 
-        public static AudioClipPlayer Create(AudioSource audioSource, AudioClipSetup audioClipSetup, AudioPlaylistSetupSO audioPlaylistSetupSO)
+        public static AudioClipPlayer Create(AudioSource audioSource, AudioClipSetup audioClipSetup, AudioPlaylistSetup audioPlaylistSetup)
         {
             AudioClipPlayer audioClipPlayer = new AudioClipPlayer();
             audioClipPlayer.AudioSource = audioSource;
             audioClipPlayer.AudioClipSetup = audioClipSetup;
-            audioClipPlayer.AudioPlaylistSetupSO = audioPlaylistSetupSO;
+            audioClipPlayer.AudioPlaylistSetup = audioPlaylistSetup;
             return audioClipPlayer;
         }
 
@@ -107,22 +107,22 @@ namespace Mixin.Utils.Audio
             if (AudioClipSetup.FadeOut && audioTime + AudioClipSetup.FadeOutDuration >= audioLength)
                 volume *= ((audioLength - audioTime) / AudioClipSetup.FadeOutDuration).Between(0, 1);
 
-            if (AudioPlaylistSetupSO != null)
+            if (AudioPlaylistSetup != null)
             {
-                if (AudioPlaylistSetupSO.FadeIn && audioTime <= AudioPlaylistSetupSO.FadeInDuration)
-                    volume *= (audioTime / AudioPlaylistSetupSO.FadeInDuration).Between(0, 1);
-                if (AudioPlaylistSetupSO.FadeOut && audioTime + AudioPlaylistSetupSO.FadeOutDuration >= audioLength)
-                    volume *= ((audioLength - audioTime) / AudioPlaylistSetupSO.FadeOutDuration).Between(0, 1);
+                if (AudioPlaylistSetup.FadeIn && audioTime <= AudioPlaylistSetup.FadeInDuration)
+                    volume *= (audioTime / AudioPlaylistSetup.FadeInDuration).Between(0, 1);
+                if (AudioPlaylistSetup.FadeOut && audioTime + AudioPlaylistSetup.FadeOutDuration >= audioLength)
+                    volume *= ((audioLength - audioTime) / AudioPlaylistSetup.FadeOutDuration).Between(0, 1);
             }
 
             return volume;
         }
 
-        public AudioMixerGroup AudioMixerGroup => AudioPlaylistSetupSO?.AudioMixerGroup ?? AudioClipSetup.AudioMixerGroup;
-        public float Volume => AudioClipSetup.Volume * (AudioPlaylistSetupSO?.Volume ?? 1);
-        public float Pitch => AudioClipSetup.Pitch * (AudioPlaylistSetupSO?.Pitch ?? 1);
-        public bool FadeIn => AudioClipSetup.FadeIn || (AudioPlaylistSetupSO?.FadeIn ?? false);
-        public bool FadeOut => AudioClipSetup.FadeOut || (AudioPlaylistSetupSO?.FadeOut ?? false);
+        public AudioMixerGroup AudioMixerGroup => AudioPlaylistSetup?.AudioMixerGroup ?? AudioClipSetup.AudioMixerGroup;
+        public float Volume => AudioClipSetup.Volume * (AudioPlaylistSetup?.Volume ?? 1);
+        public float Pitch => AudioClipSetup.Pitch * (AudioPlaylistSetup?.Pitch ?? 1);
+        public bool FadeIn => AudioClipSetup.FadeIn || (AudioPlaylistSetup?.FadeIn ?? false);
+        public bool FadeOut => AudioClipSetup.FadeOut || (AudioPlaylistSetup?.FadeOut ?? false);
         public bool Fade => FadeIn || FadeOut;
     }
 }
