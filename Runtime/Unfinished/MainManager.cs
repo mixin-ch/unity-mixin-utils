@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Mixin.Utils;
 
 public class MainManager : Singleton<MainManager>
 {
