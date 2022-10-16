@@ -24,7 +24,7 @@ namespace Mixin.Utils.Audio
             }
 
             for (int i = 0; i < _audioPlaylistPlayers.Count; i++)
-                _audioPlaylistPlayers[i].Tick();
+                _audioPlaylistPlayers[i].Tick(Time.deltaTime);
         }
 
         public void StopAllAudio()
@@ -47,13 +47,13 @@ namespace Mixin.Utils.Audio
             return Play(audioClipSetup, null);
         }
 
-        public AudioClipPlayer Play(AudioClipSetup audioClipSetup, AudioPlaylistSetup audioPlaylistSetup)
+        public AudioClipPlayer Play(AudioClipSetup audioClipSetup, AudioPlaylistPlayer audioPlaylistPlayer)
         {
             if (audioClipSetup == null)
                 return null;
 
             AudioSource audioSource = gameObject.AddComponent<AudioSource>();
-            AudioClipPlayer audioClipPlayer = AudioClipPlayer.Create(audioSource, audioClipSetup, audioPlaylistSetup);
+            AudioClipPlayer audioClipPlayer = AudioClipPlayer.Create(audioSource, audioClipSetup, audioPlaylistPlayer);
             audioClipPlayer.Play();
             _audioClipPlayers.Add(audioClipPlayer);
 

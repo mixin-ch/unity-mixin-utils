@@ -5,11 +5,8 @@ using UnityEngine;
 
 public class AudioManagerTester : MonoBehaviour
 {
-    public AudioClipSetupSO AudioClip;
-    public AudioClip AudioClip2;
     public AudioPlaylistSetupSO AudioPlaylist;
 
-    private AudioClipPlayer _audioClipPlayer;
     private AudioPlaylistPlayer _audioPlaylistPlayer;
 
     private List<Action> _funcs = new List<Action>();
@@ -17,7 +14,6 @@ public class AudioManagerTester : MonoBehaviour
 
     private void Start()
     {
-        //_audioClipPlayer = AudioManager.Instance.Play(AudioClip.ToAudioClipSetup());
         _audioPlaylistPlayer = AudioManager.Instance.Play(AudioPlaylist.ToAudioPlaylistSetup());
 
         _funcs.Add(First);
@@ -39,11 +35,6 @@ public class AudioManagerTester : MonoBehaviour
 
     private void First()
     {
-        //    _audioClipPlayer.AudioClipSetup.Volume = 0.5f;
-        //    _audioClipPlayer.AudioClipSetup.Pitch = 0.5f;
-        //    _audioClipPlayer.ApplyAudioSetup();
-
-        _audioPlaylistPlayer.AudioPlaylistSetup.Pitch = 0.5f;
-        _audioPlaylistPlayer.ApplyAudioSetup();
+        _audioPlaylistPlayer.Stop(12);
     }
 }

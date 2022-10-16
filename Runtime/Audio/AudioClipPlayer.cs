@@ -7,7 +7,7 @@ namespace Mixin.Utils.Audio
     {
         public AudioSource AudioSource { get; private set; }
         public AudioClipSetup AudioClipSetup { get; private set; }
-        public AudioPlaylistSetup AudioPlaylistSetup { get; private set; }
+        public AudioPlaylistPlayer AudioPlaylistPlayer { get; private set; }
 
         public bool Running => AudioSource != null && AudioSource.isPlaying;
 
@@ -20,12 +20,12 @@ namespace Mixin.Utils.Audio
             return Create(audioSource, audioClipSetup, null);
         }
 
-        public static AudioClipPlayer Create(AudioSource audioSource, AudioClipSetup audioClipSetup, AudioPlaylistSetup audioPlaylistSetup)
+        public static AudioClipPlayer Create(AudioSource audioSource, AudioClipSetup audioClipSetup, AudioPlaylistPlayer audioPlaylistPlayer)
         {
             AudioClipPlayer audioClipPlayer = new AudioClipPlayer();
             audioClipPlayer.AudioSource = audioSource;
             audioClipPlayer.AudioClipSetup = audioClipSetup;
-            audioClipPlayer.AudioPlaylistSetup = audioPlaylistSetup;
+            audioClipPlayer.AudioPlaylistPlayer = audioPlaylistPlayer;
             return audioClipPlayer;
         }
 
@@ -33,10 +33,17 @@ namespace Mixin.Utils.Audio
         {
             if (!Running)
                 return;
-            if (!Fade && !_stopping)
+            if (!FadeOrStop)
                 return;
 
             _time += time;
+
+            if (_stopping && _time >= _stopDuration)
+            {
+                Stop();
+                return;
+            }
+
             AudioSource.volume = GetVolume();
         }
 
@@ -64,16 +71,16 @@ namespace Mixin.Utils.Audio
             Stop(0);
         }
 
-        public void Stop(float fadeDuration)
+        public void Stop(float stopDuration)
         {
             if (AudioSource == null)
                 return;
 
             _stopping = true;
-            _stopDuration = fadeDuration;
+            _stopDuration = stopDuration;
             _time = 0;
 
-            if (fadeDuration == 0)
+            if (stopDuration <= 0)
                 AudioSource.Stop();
         }
 
@@ -99,6 +106,9 @@ namespace Mixin.Utils.Audio
             if (_stopping && _stopDuration > 0)
                 volume *= (1 - _time / _stopDuration).Between(0, 1);
 
+            if (PlaylistStopping)
+                volume *= AudioPlaylistPlayer.StoppingVolumeFactor;
+
             float audioLength = AudioClipSetup.AudioClip.length;
             float audioTime = AudioSource.time;
 
@@ -118,11 +128,15 @@ namespace Mixin.Utils.Audio
             return volume;
         }
 
+        public AudioPlaylistSetup AudioPlaylistSetup => AudioPlaylistPlayer?.AudioPlaylistSetup;
+
         public AudioMixerGroup AudioMixerGroup => AudioPlaylistSetup?.AudioMixerGroup ?? AudioClipSetup.AudioMixerGroup;
         public float Volume => AudioClipSetup.Volume * (AudioPlaylistSetup?.Volume ?? 1);
         public float Pitch => AudioClipSetup.Pitch * (AudioPlaylistSetup?.Pitch ?? 1);
         public bool FadeIn => AudioClipSetup.FadeIn || (AudioPlaylistSetup?.FadeIn ?? false);
         public bool FadeOut => AudioClipSetup.FadeOut || (AudioPlaylistSetup?.FadeOut ?? false);
         public bool Fade => FadeIn || FadeOut;
+        public bool PlaylistStopping => AudioPlaylistPlayer?.Stopping ?? false;
+        public bool FadeOrStop => Fade || _stopping || PlaylistStopping;
     }
 }
