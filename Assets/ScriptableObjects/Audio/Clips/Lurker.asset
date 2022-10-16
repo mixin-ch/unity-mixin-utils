@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c587a019d32e8fe429c79c3d85af1d73, type: 3}
+  m_Name: Lurker
+  m_EditorClassIdentifier: 
+  AudioClip: {fileID: 8300000, guid: e203be36a9b691b4c8deed93a8adce07, type: 3}
+  AudioMixerGroup: {fileID: 111281722760495013, guid: 3529529bdc070ac4f82c8fd364d2dc4c, type: 2}
+  Volume: 1
+  Pitch: 1
+  Loop: 0
+  FadeInDuration: 0
+  FadeOutDuration: 0

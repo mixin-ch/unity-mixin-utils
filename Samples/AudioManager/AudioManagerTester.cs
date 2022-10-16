@@ -4,11 +4,11 @@ using UnityEngine;
 public class AudioManagerTester : MonoBehaviour
 {
     public AudioClipSetupSO AudioClip;
-    public AudioPlaylistSetup AudioPlaylist;
+    public AudioPlaylistSetupSO AudioPlaylist;
 
     void Start()
     {
-        //AudioManager.Instance.Play(AudioSetup);
+        //AudioManager.Instance.Play(AudioClip);
         AudioManager.Instance.Play(AudioPlaylist);
     }
 }

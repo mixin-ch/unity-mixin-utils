@@ -153,27 +153,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 947f75426a3130f4bb1a1a425b0ed52f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AudioSetup:
-    AudioClip: {fileID: 8300000, guid: 974beff08ae5cef4aab215d8d4236137, type: 3}
-    AudioMixerGroup: {fileID: -706485928751503804, guid: 3529529bdc070ac4f82c8fd364d2dc4c, type: 2}
-    Volume: 1
-    Pitch: 1
-    Loop: 1
-    FadeInDuration: 1
-    FadeOutDuration: 1
-  AudioPlaylistSetup:
-    Automatic: 1
-    Shuffle: 1
-    AudioMixerGroup: {fileID: 111281722760495013, guid: 3529529bdc070ac4f82c8fd364d2dc4c, type: 2}
-    Volume: 1
-    Pitch: 1
-    FadeInDuration: 1
-    FadeOutDuration: 1
-    AudioClips:
-    - {fileID: 8300000, guid: 974beff08ae5cef4aab215d8d4236137, type: 3}
-    - {fileID: 8300000, guid: e203be36a9b691b4c8deed93a8adce07, type: 3}
-    - {fileID: 8300000, guid: cb2821c57e9d5d84e94b848ca172dcf2, type: 3}
-    - {fileID: 8300000, guid: 50be04afa1bfe114db2154323f55c08f, type: 3}
+  AudioClip: {fileID: 11400000, guid: 93c93d497b2d06c48800a2a00ef3e64e, type: 2}
+  AudioPlaylist: {fileID: 11400000, guid: 79ae7a9106341b04193a21eaecd9726d, type: 2}
 --- !u!114 &1915627132
 MonoBehaviour:
   m_ObjectHideFlags: 0

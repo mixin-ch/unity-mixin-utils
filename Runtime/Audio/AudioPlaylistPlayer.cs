@@ -4,14 +4,14 @@ namespace Mixin.Utils.Audio
 {
     public class AudioPlaylistPlayer
     {
-        public AudioPlaylistSetup AudioPlaylistSetup { get; private set; }
+        public AudioPlaylistSetupSO AudioPlaylistSetupSO { get; private set; }
 
         public bool Running { get; private set; }
 
-        public static AudioPlaylistPlayer Create(AudioPlaylistSetup audioPlaylistSetup)
+        public static AudioPlaylistPlayer Create(AudioPlaylistSetupSO audioPlaylistSetupSO)
         {
             AudioPlaylistPlayer audioPlaylistPlayer = new AudioPlaylistPlayer();
-            audioPlaylistPlayer.AudioPlaylistSetup = audioPlaylistSetup;
+            audioPlaylistPlayer.AudioPlaylistSetupSO = audioPlaylistSetupSO;
             return audioPlaylistPlayer;
         }
 
@@ -24,7 +24,7 @@ namespace Mixin.Utils.Audio
                 return;
             if (_currentAudioClipPlayer != null && _currentAudioClipPlayer.Running)
                 return;
-            if (!AudioPlaylistSetup.Automatic)
+            if (!AudioPlaylistSetupSO.Automatic)
             {
                 Running = false;
                 return;
@@ -49,7 +49,7 @@ namespace Mixin.Utils.Audio
 
             AudioClipSetupSO audioClipSetupSO = _audioClipsToPlay[0];
             _audioClipsToPlay.RemoveAt(0);
-            _currentAudioClipPlayer = AudioManager.Instance.Play(audioClipSetupSO);
+            _currentAudioClipPlayer = AudioManager.Instance.Play(audioClipSetupSO, AudioPlaylistSetupSO);
         }
 
         public void Stop()
@@ -66,9 +66,9 @@ namespace Mixin.Utils.Audio
 
         private void RefreshAudioClipsToPlay()
         {
-            _audioClipsToPlay = AudioPlaylistSetup.GenerateClipAudioSetupSOs();
+            _audioClipsToPlay = new List<AudioClipSetupSO>(AudioPlaylistSetupSO.AudioClipSetupSOs);
 
-            if (AudioPlaylistSetup.Shuffle)
+            if (AudioPlaylistSetupSO.Shuffle)
                 _audioClipsToPlay.Shuffle(new System.Random());
         }
     }
