@@ -5,20 +5,20 @@ namespace Mixin.Utils.Audio
 {
     public class AudioManager : Singleton<AudioManager>
     {
-        private List<AudioPlayer> _audioPlayers = new List<AudioPlayer>();
+        private List<AudioClipPlayer> _audioClipPlayers = new List<AudioClipPlayer>();
         public List<AudioPlaylistPlayer> _audioPlaylistPlayers = new List<AudioPlaylistPlayer>();
 
         void Update()
         {
-            for (int i = 0; i < _audioPlayers.Count; i++)
+            for (int i = 0; i < _audioClipPlayers.Count; i++)
             {
-                AudioPlayer audioPlayer = _audioPlayers[i];
-                audioPlayer.Tick(Time.deltaTime);
+                AudioClipPlayer audioClipPlayer = _audioClipPlayers[i];
+                audioClipPlayer.Tick(Time.deltaTime);
 
-                if (!audioPlayer.Running)
+                if (!audioClipPlayer.Running)
                 {
-                    Destroy(audioPlayer.AudioSource);
-                    _audioPlayers.RemoveAt(i);
+                    Destroy(audioClipPlayer.AudioSource);
+                    _audioClipPlayers.RemoveAt(i);
                     i--;
                 }
             }
@@ -29,10 +29,10 @@ namespace Mixin.Utils.Audio
 
         public void StopAllAudio()
         {
-            while (_audioPlayers.Count > 0)
+            while (_audioClipPlayers.Count > 0)
             {
-                Destroy(_audioPlayers[0].AudioSource);
-                _audioPlayers.RemoveAt(0);
+                Destroy(_audioClipPlayers[0].AudioSource);
+                _audioClipPlayers.RemoveAt(0);
             }
 
             while (_audioPlaylistPlayers.Count > 0)
@@ -42,17 +42,17 @@ namespace Mixin.Utils.Audio
             }
         }
 
-        public AudioPlayer Play(AudioSetupSO audioSetup)
+        public AudioClipPlayer Play(AudioClipSetupSO audioClipSetupSO)
         {
-            if (audioSetup == null)
+            if (audioClipSetupSO == null)
                 return null;
 
             AudioSource audioSource = gameObject.AddComponent<AudioSource>();
-            AudioPlayer audioPlayer = AudioPlayer.Create(audioSource, audioSetup);
-            audioPlayer.Play();
-            _audioPlayers.Add(audioPlayer);
+            AudioClipPlayer audioClipPlayer = AudioClipPlayer.Create(audioSource, audioClipSetupSO);
+            audioClipPlayer.Play();
+            _audioClipPlayers.Add(audioClipPlayer);
 
-            return audioPlayer;
+            return audioClipPlayer;
         }
 
         public AudioPlaylistPlayer MakePlaylist(AudioPlaylistSetup audioPlaylistSetup)

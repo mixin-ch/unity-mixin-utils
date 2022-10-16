@@ -15,14 +15,14 @@ namespace Mixin.Utils.Audio
             return audioPlaylistPlayer;
         }
 
-        private List<AudioSetupSO> _audioSetupListToPlay = new List<AudioSetupSO>();
-        private AudioPlayer _currentAudioPlayer;
+        private List<AudioClipSetupSO> _audioClipsToPlay = new List<AudioClipSetupSO>();
+        private AudioClipPlayer _currentAudioClipPlayer;
 
         public void Tick()
         {
             if (!Running)
                 return;
-            if (_currentAudioPlayer != null && _currentAudioPlayer.Running)
+            if (_currentAudioClipPlayer != null && _currentAudioClipPlayer.Running)
                 return;
             if (!AudioPlaylistSetup.Automatic)
             {
@@ -41,15 +41,15 @@ namespace Mixin.Utils.Audio
 
         private void PlayTrack()
         {
-            if (_currentAudioPlayer != null && _currentAudioPlayer.Running)
-                _currentAudioPlayer.Stop();
+            if (_currentAudioClipPlayer != null && _currentAudioClipPlayer.Running)
+                _currentAudioClipPlayer.Stop();
 
-            if (_audioSetupListToPlay.Count == 0)
+            if (_audioClipsToPlay.Count == 0)
                 RefreshAudioClipsToPlay();
 
-            AudioSetupSO audioSetup = _audioSetupListToPlay[0];
-            _audioSetupListToPlay.RemoveAt(0);
-            _currentAudioPlayer = AudioManager.Instance.Play(audioSetup);
+            AudioClipSetupSO audioClipSetupSO = _audioClipsToPlay[0];
+            _audioClipsToPlay.RemoveAt(0);
+            _currentAudioClipPlayer = AudioManager.Instance.Play(audioClipSetupSO);
         }
 
         public void Stop()
@@ -57,19 +57,19 @@ namespace Mixin.Utils.Audio
             if (!Running)
                 return;
 
-            if (_currentAudioPlayer == null)
+            if (_currentAudioClipPlayer == null)
                 return;
 
-            _currentAudioPlayer.Stop();
+            _currentAudioClipPlayer.Stop();
             Running = false;
         }
 
         private void RefreshAudioClipsToPlay()
         {
-            _audioSetupListToPlay = AudioPlaylistSetup.GenerateAudioSetups();
+            _audioClipsToPlay = AudioPlaylistSetup.GenerateClipAudioSetupSOs();
 
             if (AudioPlaylistSetup.Shuffle)
-                _audioSetupListToPlay.Shuffle(new System.Random());
+                _audioClipsToPlay.Shuffle(new System.Random());
         }
     }
 }

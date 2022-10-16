@@ -6,7 +6,7 @@ namespace Mixin.Utils.Audio
 {
     [CreateAssetMenu(fileName = "AudioSetup", menuName = "Mixin/Audio/AudioSetupSO")]
     [System.Serializable]
-    public class AudioSetupSO : ScriptableObject
+    public class AudioClipSetupSO : ScriptableObject
     {
         public AudioClip AudioClip;
         public AudioMixerGroup AudioMixerGroup;
@@ -23,22 +23,22 @@ namespace Mixin.Utils.Audio
         public bool FadeOut => FadeOutDuration > 0;
         public bool Fade => FadeIn || FadeOut;
 
-        public static List<AudioSetupSO> GenerateAudioSetups(AudioPlaylistSetup audioPlaylistSetup)
+        public static List<AudioClipSetupSO> GenerateClipAudioSetupSOs(AudioPlaylistSetup audioPlaylistSetup)
         {
-            List<AudioSetupSO> audioSetups = new List<AudioSetupSO>();
+            List<AudioClipSetupSO> audioClipSetupSOs = new List<AudioClipSetupSO>();
 
             foreach (AudioClip audioClip in audioPlaylistSetup.AudioClips)
             {
-                AudioSetupSO audioSetup = new AudioSetupSO();
-                audioSetup.AudioClip = audioClip;
-                audioSetup.Volume = audioPlaylistSetup.Volume;
-                audioSetup.Pitch = audioPlaylistSetup.Pitch;
-                audioSetup.FadeInDuration = audioPlaylistSetup.FadeInDuration;
-                audioSetup.FadeOutDuration = audioPlaylistSetup.FadeOutDuration;
-                audioSetups.Add(audioSetup);
+                AudioClipSetupSO audioClipSetupSO = new AudioClipSetupSO();
+                audioClipSetupSO.AudioClip = audioClip;
+                audioClipSetupSO.Volume = audioPlaylistSetup.Volume;
+                audioClipSetupSO.Pitch = audioPlaylistSetup.Pitch;
+                audioClipSetupSO.FadeInDuration = audioPlaylistSetup.FadeInDuration;
+                audioClipSetupSO.FadeOutDuration = audioPlaylistSetup.FadeOutDuration;
+                audioClipSetupSOs.Add(audioClipSetupSO);
             }
 
-            return audioSetups;
+            return audioClipSetupSOs;
         }
     }
 }
