@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class AudioManagerTester : MonoBehaviour
 {
-    public AudioSetup AudioSetup;
-    public AudioPlaylistSetup AudioPlaylistSetup;
+    public AudioClipSetupSO AudioClip;
+    public AudioPlaylistSetup AudioPlaylist;
 
     void Start()
     {
         //AudioManager.Instance.Play(AudioSetup);
-        AudioManager.Instance.Play(AudioPlaylistSetup);
+        AudioManager.Instance.Play(AudioPlaylist);
     }
 }
