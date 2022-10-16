@@ -17,22 +17,8 @@ namespace Mixin.Utils.Audio
         [Min(0)]
         public float FadeOutDuration;
 
-        public AudioSetup Copy()
-        {
-            AudioSetup audioSetup = new AudioSetup();
-
-            audioSetup.AudioClip = AudioClip;
-            audioSetup.AudioMixerGroup = AudioMixerGroup;
-            audioSetup.Volume = Volume;
-            audioSetup.Pitch = Pitch;
-            audioSetup.Loop = Loop;
-            audioSetup.FadeInDuration = FadeInDuration;
-            audioSetup.FadeOutDuration = FadeOutDuration;
-
-            return audioSetup;
-        }
-
         public bool FadeIn => FadeInDuration > 0;
         public bool FadeOut => FadeOutDuration > 0;
+        public bool Fade => FadeIn || FadeOut;
     }
 }

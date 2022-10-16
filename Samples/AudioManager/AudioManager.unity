@@ -155,9 +155,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AudioSetup:
     AudioClip: {fileID: 8300000, guid: 974beff08ae5cef4aab215d8d4236137, type: 3}
+    AudioMixerGroup: {fileID: -706485928751503804, guid: 3529529bdc070ac4f82c8fd364d2dc4c, type: 2}
     Volume: 1
     Pitch: 1
-    AudioMixerGroup: {fileID: -706485928751503804, guid: 3529529bdc070ac4f82c8fd364d2dc4c, type: 2}
+    Loop: 1
+    FadeInDuration: 1
+    FadeOutDuration: 1
 --- !u!114 &1915627132
 MonoBehaviour:
   m_ObjectHideFlags: 0
