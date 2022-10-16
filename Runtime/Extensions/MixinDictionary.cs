@@ -8,6 +8,7 @@ namespace Mixin.Utils
     /// </summary>
     /// <typeparam name="TKey"></typeparam>
     /// <typeparam name="TValue"></typeparam>
+    [System.Serializable]
     public class MixinDictionary<TKey, TValue> : SerializableDictionaryBase<TKey, TValue>
     {
     }
