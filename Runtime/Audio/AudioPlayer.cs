@@ -5,7 +5,7 @@ namespace Mixin.Utils.Audio
     public class AudioPlayer
     {
         public AudioSource AudioSource { get; private set; }
-        public AudioSetup AudioSetup { get; private set; }
+        public AudioSetupSO AudioSetup { get; private set; }
 
         public bool Running => AudioSource != null && AudioSource.isPlaying;
 
@@ -13,7 +13,7 @@ namespace Mixin.Utils.Audio
         private float _stopDuration;
         private float _time;
 
-        public static AudioPlayer Create(AudioSource audioSource, AudioSetup audioSetup)
+        public static AudioPlayer Create(AudioSource audioSource, AudioSetupSO audioSetup)
         {
             AudioPlayer audioPlayer = new AudioPlayer();
             audioPlayer.AudioSource = audioSource;

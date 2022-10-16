@@ -4,8 +4,9 @@ using UnityEngine.Audio;
 
 namespace Mixin.Utils.Audio
 {
+    [CreateAssetMenu(fileName = "AudioSetup", menuName = "Mixin/Audio/AudioSetupSO")]
     [System.Serializable]
-    public class AudioSetup
+    public class AudioSetupSO : ScriptableObject
     {
         public AudioClip AudioClip;
         public AudioMixerGroup AudioMixerGroup;
@@ -22,13 +23,13 @@ namespace Mixin.Utils.Audio
         public bool FadeOut => FadeOutDuration > 0;
         public bool Fade => FadeIn || FadeOut;
 
-        public static List<AudioSetup> GenerateAudioSetups(AudioPlaylistSetup audioPlaylistSetup)
+        public static List<AudioSetupSO> GenerateAudioSetups(AudioPlaylistSetup audioPlaylistSetup)
         {
-            List<AudioSetup> audioSetups = new List<AudioSetup>();
+            List<AudioSetupSO> audioSetups = new List<AudioSetupSO>();
 
             foreach (AudioClip audioClip in audioPlaylistSetup.AudioClips)
             {
-                AudioSetup audioSetup = new AudioSetup();
+                AudioSetupSO audioSetup = new AudioSetupSO();
                 audioSetup.AudioClip = audioClip;
                 audioSetup.Volume = audioPlaylistSetup.Volume;
                 audioSetup.Pitch = audioPlaylistSetup.Pitch;

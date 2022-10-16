@@ -25,9 +25,9 @@ namespace Mixin.Utils.Audio
         public bool FadeOut => FadeOutDuration > 0;
         public bool Fade => FadeIn || FadeOut;
 
-        public List<AudioSetup> GenerateAudioSetups()
+        public List<AudioSetupSO> GenerateAudioSetups()
         {
-            return AudioSetup.GenerateAudioSetups(this);
+            return AudioSetupSO.GenerateAudioSetups(this);
         }
     }
 }

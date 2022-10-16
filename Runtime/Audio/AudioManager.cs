@@ -42,7 +42,7 @@ namespace Mixin.Utils.Audio
             }
         }
 
-        public AudioPlayer Play(AudioSetup audioSetup)
+        public AudioPlayer Play(AudioSetupSO audioSetup)
         {
             if (audioSetup == null)
                 return null;

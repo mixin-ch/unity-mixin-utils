@@ -15,7 +15,7 @@ namespace Mixin.Utils.Audio
             return audioPlaylistPlayer;
         }
 
-        private List<AudioSetup> _audioSetupListToPlay = new List<AudioSetup>();
+        private List<AudioSetupSO> _audioSetupListToPlay = new List<AudioSetupSO>();
         private AudioPlayer _currentAudioPlayer;
 
         public void Tick()
@@ -47,7 +47,7 @@ namespace Mixin.Utils.Audio
             if (_audioSetupListToPlay.Count == 0)
                 RefreshAudioClipsToPlay();
 
-            AudioSetup audioSetup = _audioSetupListToPlay[0];
+            AudioSetupSO audioSetup = _audioSetupListToPlay[0];
             _audioSetupListToPlay.RemoveAt(0);
             _currentAudioPlayer = AudioManager.Instance.Play(audioSetup);
         }
