@@ -25,10 +25,10 @@ namespace Mixin.Utils
                         _instance = GameObject.FindObjectOfType<T>();
                         if (_instance == null)
                         {
+#if !UNITY_EDITOR
                             GameObject go = new GameObject(typeof(T).ToString());
                             _instance = go.AddComponent<T>();
 
-#if !UNITY_EDITOR
                             DontDestroyOnLoad(_instance.gameObject);
 #endif
                         }

@@ -16,5 +16,20 @@ namespace Mixin.Utils
             foreach (Transform child in parent.transform)
                 Object.Destroy(child.gameObject);
         }
+
+        public static GameObject GeneratePrefab(this GameObject prefab, GameObject parent, string name)
+        {
+            GameObject obj = GameObject.Instantiate(prefab);
+            obj.name = name;
+            if (parent != null)
+                obj.transform.SetParent(parent.transform, false);
+
+            return obj;
+        }
+
+        public static GameObject GeneratePrefab(this GameObject prefab, GameObject parent)
+        {
+            return GeneratePrefab(prefab, parent, prefab.name);
+        }
     }
 }
