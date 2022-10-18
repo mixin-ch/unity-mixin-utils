@@ -2,19 +2,52 @@
 
 namespace Mixin.Utils.Audio
 {
+    /// <summary>
+    /// Plays and manages a single Audio Playlist.
+    /// </summary>
+    [System.Serializable]
     public class AudioPlaylistPlayer
     {
         public AudioPlaylistSetup AudioPlaylistSetup { get; private set; }
 
+        /// <summary>
+        /// Is the Playlist currently being played?
+        /// </summary>
         public bool Running { get; private set; }
 
+        /// <summary>
+        /// Has the Playlist Player been ordered to stop?
+        /// </summary>
         private bool _stopping;
+
+        /// <inheritdoc cref="_stopping"/>
+        public bool Stopping => _stopping;
+
+        /// <summary>
+        /// The time it takes until the Playlist Player fades to a stop.
+        /// </summary>
         private float _stopDuration;
+
+        /// <summary>
+        /// The time passed since the Playlist Player was ordered to stop.
+        /// </summary>
         private float _time;
 
-        public bool Stopping => _stopping;
-        // The Volume Factor, in case of a fading Stop.
+        /// <summary>
+        /// The Volume Factor, in case of a fading Stop.
+        /// </summary>
         public float StoppingVolumeFactor => Stopping ? (1 - _time / _stopDuration).Between(0, 1) : 1;
+
+        /// <summary>
+        /// The list of Tracks the Playlist will play through in order.
+        /// </summary>
+        private List<AudioTrackSetup> _audioTracksToPlay = new List<AudioTrackSetup>();
+
+        /// <summary>
+        /// The AudioTrackPlayer that is playing. <br/>
+        /// This is null if no Track is playing.
+        /// </summary>
+        private AudioTrackPlayer _currentAudioTrackPlayer;
 
         public static AudioPlaylistPlayer Create(AudioPlaylistSetup audioPlaylistSetup)
         {
@@ -23,9 +56,10 @@ namespace Mixin.Utils.Audio
             return audioPlaylistPlayer;
         }
 
-        private List<AudioTrackSetup> _audioTracksToPlay = new List<AudioTrackSetup>();
-        private AudioTrackPlayer _currentAudioTrackPlayer;
-
+        /// <summary>
+        /// A method to regularly update the Player for things like fading out. 
+        /// </summary>
+        /// <param name="time">The time passed since the last tick.</param>
         public void Tick(float time)
         {
             if (!Running)
@@ -55,6 +89,9 @@ namespace Mixin.Utils.Audio
             }
         }
 
+        /// <summary>
+        /// Start playing the Playlist.
+        /// </summary>
         public void Play()
         {
             _stopping = false;
@@ -64,6 +101,9 @@ namespace Mixin.Utils.Audio
             PlayTrack();
         }
 
+        /// <summary>
+        /// Start playing the next Track in the Playlist.
+        /// </summary>
         private void PlayTrack()
         {
             if (_currentAudioTrackPlayer != null && _currentAudioTrackPlayer.Running)
@@ -77,11 +117,18 @@ namespace Mixin.Utils.Audio
             _currentAudioTrackPlayer = AudioManager.Instance.Play(audioTrackSetup, this);
         }
 
+        /// <summary>
+        /// Stop the Playlist.
+        /// </summary>
         public void Stop()
         {
             Stop(0);
         }
 
+        /// <summary>
+        /// Fades out the Playlist, and then stops it.
+        /// </summary>
+        /// <param name="stopDuration">Duration of the fading until the stop.</param>
         public void Stop(float stopDuration)
         {
             if (!Running)
@@ -101,6 +148,9 @@ namespace Mixin.Utils.Audio
             }
         }
 
+        /// <summary>
+        /// Applies all the values to the AudioSource of the current Track, if currently playing.
+        /// </summary>
         public void ApplyAudioSetup()
         {
             if (_currentAudioTrackPlayer == null)
@@ -109,6 +159,9 @@ namespace Mixin.Utils.Audio
             _currentAudioTrackPlayer.ApplyAudioSetup();
         }
 
+        /// <summary>
+        /// Refreshes the list of Tracks the Playlist will play through in order.
+        /// </summary>
         private void RefreshAudioTracksToPlay()
         {
             _audioTracksToPlay = new List<AudioTrackSetup>(AudioPlaylistSetup.AudioTrackSetups);

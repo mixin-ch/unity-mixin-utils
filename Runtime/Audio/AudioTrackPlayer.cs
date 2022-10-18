@@ -4,14 +4,16 @@ using UnityEngine.Audio;
 namespace Mixin.Utils.Audio
 {
     /// <summary>
-    /// Plays and manages a single AudioTrack.
+    /// Plays and manages a single Audio Track.
     /// </summary>
     public class AudioTrackPlayer
     {
         public AudioSource AudioSource { get; private set; }
+
         public AudioTrackSetup AudioTrackSetup { get; private set; }
+
         /// <summary>
-        /// The PlaylistPlayer playing this Track. <br/>
+        /// The Playlist Player playing this Track. <br/>
         /// If this Track does not originate from a Playlist, this field is null.
         /// </summary>
         public AudioPlaylistPlayer AudioPlaylistPlayer { get; private set; }
@@ -22,15 +24,17 @@ namespace Mixin.Utils.Audio
         public bool Running => AudioSource != null && AudioSource.isPlaying;
 
         /// <summary>
-        /// Has the TrackPlayer been ordered to stop?
+        /// Has the Track Player been ordered to stop?
         /// </summary>
         private bool _stopping;
+
         /// <summary>
-        /// The time it takes until the TrackPlayer fades to a stop.
+        /// The time it takes until the Track Player fades to a stop.
         /// </summary>
         private float _stopDuration;
+
         /// <summary>
-        /// The time passed since the TrackPlayer was ordered to stop.
+        /// The time passed since the Track Player was ordered to stop.
         /// </summary>
         private float _time;
 
@@ -49,7 +53,7 @@ namespace Mixin.Utils.Audio
         }
 
         /// <summary>
-        /// A Method to regularly update the Player for things like fading out. 
+        /// A method to regularly update the Player for things like fading out. 
         /// </summary>
         /// <param name="time">The time passed since the last tick.</param>
         public void Tick(float time)
@@ -174,7 +178,7 @@ namespace Mixin.Utils.Audio
         }
 
         /// <summary>
-        /// Setup of the referenced PlaylistPlayer.
+        /// Setup of the referenced Playlist Player.
         /// </summary>
         public AudioPlaylistSetup AudioPlaylistSetup => AudioPlaylistPlayer?.AudioPlaylistSetup;
 
