@@ -4,7 +4,7 @@ using UnityEngine.Audio;
 namespace Mixin.Utils.Audio
 {
     /// <summary>
-    /// Data for playing an Audioclip.
+    /// Data for playing an Audio Clip.
     /// </summary>
     [CreateAssetMenu(fileName = "AudioClipSetupSO", menuName = "Mixin/Audio/AudioClipSetupSO")]
     [System.Serializable]
