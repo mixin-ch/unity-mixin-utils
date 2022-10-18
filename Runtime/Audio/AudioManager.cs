@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace Mixin.Utils.Audio
 {
+    /// <summary>
+    /// Singleton for managing the playing of various Audio Tracks and Playlists.
+    /// </summary>
     public class AudioManager : Singleton<AudioManager>
     {
         private List<AudioTrackPlayer> _audioTrackPlayers = new List<AudioTrackPlayer>();
@@ -42,11 +45,18 @@ namespace Mixin.Utils.Audio
             }
         }
 
+        /// <inheritdoc cref="Play(AudioTrackSetup, AudioPlaylistPlayer)"/>
         public AudioTrackPlayer Play(AudioTrackSetup audioTrackSetup)
         {
             return Play(audioTrackSetup, null);
         }
 
+        /// <summary>
+        /// Plays An Audio Track with the specified Setup.
+        /// </summary>
+        /// <param name="audioTrackSetup">The Setup of the Audio Track.</param>
+        /// <param name="audioPlaylistPlayer">The Playlist playing this Track, if existing.</param>
+        /// <returns>The Player managing the Audio Track.</returns>
         public AudioTrackPlayer Play(AudioTrackSetup audioTrackSetup, AudioPlaylistPlayer audioPlaylistPlayer)
         {
             if (audioTrackSetup == null)
@@ -60,6 +70,11 @@ namespace Mixin.Utils.Audio
             return audioTrackPlayer;
         }
 
+        /// <summary>
+        /// Makes a Playlist Player with the specified Setup.
+        /// </summary>
+        /// <param name="audioPlaylistSetup">The Setup of the Audio Playlist.</param>
+        /// <returns>The Player managing the Audio Playlist.</returns>
         public AudioPlaylistPlayer MakePlaylist(AudioPlaylistSetup audioPlaylistSetup)
         {
             if (audioPlaylistSetup == null)
@@ -71,6 +86,11 @@ namespace Mixin.Utils.Audio
             return audioPlaylistPlayer;
         }
 
+        /// <summary>
+        /// Plays An Audio Playlist with the specified Setup.
+        /// </summary>
+        /// <param name="audioPlaylistSetup">The Setup of the Audio Playlist.</param>
+        /// <returns>The Player managing the Audio Playlist.</returns>
         public AudioPlaylistPlayer Play(AudioPlaylistSetup audioPlaylistSetup)
         {
             AudioPlaylistPlayer audioPlaylistPlayer = MakePlaylist(audioPlaylistSetup);
@@ -81,7 +101,9 @@ namespace Mixin.Utils.Audio
             return audioPlaylistPlayer;
         }
 
-
+        /// <summary>
+        /// Stops and Removes the given Playlist Player.
+        /// </summary>
         public void RemovePlaylist(AudioPlaylistPlayer audioPlaylistPlayer)
         {
             if (audioPlaylistPlayer == null)
