@@ -45,10 +45,10 @@ namespace Mixin.Utils.Audio
         private float _fadeInDuration;
 
         /// <summary>
-        /// The duration of fading out at the end f every Track. <br/>
+        /// The duration of fading out at the end of every Track. <br/>
         /// Does nothing if greater equal 0.
         /// </summary>
-        [Tooltip("The duration of fading out at the end f every Track.")]
+        [Tooltip("The duration of fading out at the end of every Track.")]
         [SerializeField]
         [Min(0)]
         private float _fadeOutDuration;
