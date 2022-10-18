@@ -23,8 +23,8 @@ namespace Mixin.Utils.Audio
             return audioPlaylistPlayer;
         }
 
-        private List<AudioClipSetup> _audioClipsToPlay = new List<AudioClipSetup>();
-        private AudioClipPlayer _currentAudioClipPlayer;
+        private List<AudioTrackSetup> _audioTracksToPlay = new List<AudioTrackSetup>();
+        private AudioTrackPlayer _currentAudioTrackPlayer;
 
         public void Tick(float time)
         {
@@ -43,7 +43,7 @@ namespace Mixin.Utils.Audio
             }
 
             // If not Running
-            if (!_currentAudioClipPlayer?.Running ?? true)
+            if (!_currentAudioTrackPlayer?.Running ?? true)
             {
                 if (!AudioPlaylistSetup.Automatic)
                 {
@@ -66,15 +66,15 @@ namespace Mixin.Utils.Audio
 
         private void PlayTrack()
         {
-            if (_currentAudioClipPlayer != null && _currentAudioClipPlayer.Running)
-                _currentAudioClipPlayer.Stop();
+            if (_currentAudioTrackPlayer != null && _currentAudioTrackPlayer.Running)
+                _currentAudioTrackPlayer.Stop();
 
-            if (_audioClipsToPlay.Count == 0)
-                RefreshAudioClipsToPlay();
+            if (_audioTracksToPlay.Count == 0)
+                RefreshAudioTracksToPlay();
 
-            AudioClipSetup audioClipSetup = _audioClipsToPlay[0];
-            _audioClipsToPlay.RemoveAt(0);
-            _currentAudioClipPlayer = AudioManager.Instance.Play(audioClipSetup, this);
+            AudioTrackSetup audioTrackSetup = _audioTracksToPlay[0];
+            _audioTracksToPlay.RemoveAt(0);
+            _currentAudioTrackPlayer = AudioManager.Instance.Play(audioTrackSetup, this);
         }
 
         public void Stop()
@@ -87,7 +87,7 @@ namespace Mixin.Utils.Audio
             if (!Running)
                 return;
 
-            if (_currentAudioClipPlayer == null)
+            if (_currentAudioTrackPlayer == null)
                 return;
 
             _stopping = true;
@@ -96,25 +96,25 @@ namespace Mixin.Utils.Audio
 
             if (stopDuration <= 0)
             {
-                _currentAudioClipPlayer.Stop();
+                _currentAudioTrackPlayer.Stop();
                 Running = false;
             }
         }
 
         public void ApplyAudioSetup()
         {
-            if (_currentAudioClipPlayer == null)
+            if (_currentAudioTrackPlayer == null)
                 return;
 
-            _currentAudioClipPlayer.ApplyAudioSetup();
+            _currentAudioTrackPlayer.ApplyAudioSetup();
         }
 
-        private void RefreshAudioClipsToPlay()
+        private void RefreshAudioTracksToPlay()
         {
-            _audioClipsToPlay = new List<AudioClipSetup>(AudioPlaylistSetup.AudioClipSetups);
+            _audioTracksToPlay = new List<AudioTrackSetup>(AudioPlaylistSetup.AudioTrackSetups);
 
             if (AudioPlaylistSetup.Shuffle)
-                _audioClipsToPlay.Shuffle(new System.Random());
+                _audioTracksToPlay.Shuffle(new System.Random());
         }
     }
 }

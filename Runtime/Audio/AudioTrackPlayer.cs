@@ -4,48 +4,48 @@ using UnityEngine.Audio;
 namespace Mixin.Utils.Audio
 {
     /// <summary>
-    /// Plays and manages a single AudioClip.
+    /// Plays and manages a single AudioTrack.
     /// </summary>
-    public class AudioClipPlayer
+    public class AudioTrackPlayer
     {
         public AudioSource AudioSource { get; private set; }
-        public AudioClipSetup AudioClipSetup { get; private set; }
+        public AudioTrackSetup AudioTrackSetup { get; private set; }
         /// <summary>
-        /// The PlaylistPlayer playing this clip. <br/>
-        /// If this clip does not originate from a playlist, this field is null.
+        /// The PlaylistPlayer playing this Track. <br/>
+        /// If this Track does not originate from a Playlist, this field is null.
         /// </summary>
         public AudioPlaylistPlayer AudioPlaylistPlayer { get; private set; }
 
         /// <summary>
-        /// Is the clip currently being played?
+        /// Is the Track currently being played?
         /// </summary>
         public bool Running => AudioSource != null && AudioSource.isPlaying;
 
         /// <summary>
-        /// Has the clip been ordered to stop?
+        /// Has the TrackPlayer been ordered to stop?
         /// </summary>
         private bool _stopping;
         /// <summary>
-        /// The time it takes until the clip fades to a stop.
+        /// The time it takes until the TrackPlayer fades to a stop.
         /// </summary>
         private float _stopDuration;
         /// <summary>
-        /// The time passed since the clip was ordered to stop.
+        /// The time passed since the TrackPlayer was ordered to stop.
         /// </summary>
         private float _time;
 
-        public static AudioClipPlayer Create(AudioSource audioSource, AudioClipSetup audioClipSetup)
+        public static AudioTrackPlayer Create(AudioSource audioSource, AudioTrackSetup audioTrackSetup)
         {
-            return Create(audioSource, audioClipSetup, null);
+            return Create(audioSource, audioTrackSetup, null);
         }
 
-        public static AudioClipPlayer Create(AudioSource audioSource, AudioClipSetup audioClipSetup, AudioPlaylistPlayer audioPlaylistPlayer)
+        public static AudioTrackPlayer Create(AudioSource audioSource, AudioTrackSetup audioTrackSetup, AudioPlaylistPlayer audioPlaylistPlayer)
         {
-            AudioClipPlayer audioClipPlayer = new AudioClipPlayer();
-            audioClipPlayer.AudioSource = audioSource;
-            audioClipPlayer.AudioClipSetup = audioClipSetup;
-            audioClipPlayer.AudioPlaylistPlayer = audioPlaylistPlayer;
-            return audioClipPlayer;
+            AudioTrackPlayer audioTrackPlayer = new AudioTrackPlayer();
+            audioTrackPlayer.AudioSource = audioSource;
+            audioTrackPlayer.AudioTrackSetup = audioTrackSetup;
+            audioTrackPlayer.AudioPlaylistPlayer = audioPlaylistPlayer;
+            return audioTrackPlayer;
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace Mixin.Utils.Audio
         }
 
         /// <summary>
-        /// Start playing the clip.
+        /// Start playing the Track.
         /// </summary>
         public void Play()
         {
@@ -83,7 +83,7 @@ namespace Mixin.Utils.Audio
             _time = 0;
 
             if (Pitch < 0)
-                AudioSource.time = (AudioClipSetup.AudioClip.length - 0.01f).LowerBound(0);
+                AudioSource.time = (AudioTrackSetup.AudioClip.length - 0.01f).LowerBound(0);
             else
                 AudioSource.time = 0;
 
@@ -93,7 +93,7 @@ namespace Mixin.Utils.Audio
         }
 
         /// <summary>
-        /// Stop the clip.
+        /// Stop the Track.
         /// </summary>
         public void Stop()
         {
@@ -101,7 +101,7 @@ namespace Mixin.Utils.Audio
         }
 
         /// <summary>
-        /// Fades out the clip, and then stops it.
+        /// Fades out the Track, and then stops it.
         /// </summary>
         /// <param name="stopDuration">Duration of the fading until the stop.</param>
         public void Stop(float stopDuration)
@@ -125,8 +125,8 @@ namespace Mixin.Utils.Audio
             if (AudioSource == null)
                 return;
 
-            AudioSource.clip = AudioClipSetup.AudioClip;
-            AudioSource.loop = AudioClipSetup.Loop;
+            AudioSource.clip = AudioTrackSetup.AudioClip;
+            AudioSource.loop = AudioTrackSetup.Loop;
             AudioSource.volume = GetVolume();
             AudioSource.pitch = Pitch;
             AudioSource.outputAudioMixerGroup = AudioMixerGroup;
@@ -142,7 +142,7 @@ namespace Mixin.Utils.Audio
 
             float volume = Volume;
 
-            // Clip stopping?
+            // Track stopping?
             if (_stopping && _stopDuration > 0)
                 volume *= (1 - _time / _stopDuration).Between(0, 1);
 
@@ -150,15 +150,15 @@ namespace Mixin.Utils.Audio
             if (PlaylistStopping)
                 volume *= AudioPlaylistPlayer.StoppingVolumeFactor;
 
-            float audioLength = AudioClipSetup.AudioClip.length;
+            float audioLength = AudioTrackSetup.AudioClip.length;
             float audioTime = AudioSource.time;
 
-            // Clip start fade?
-            if (AudioClipSetup.StartFade && audioTime <= AudioClipSetup.StartFadeDuration)
-                volume *= (audioTime / AudioClipSetup.StartFadeDuration).Between(0, 1);
-            // Clip end fade?
-            if (AudioClipSetup.EndFade && audioTime + AudioClipSetup.EndFadeDuration >= audioLength)
-                volume *= ((audioLength - audioTime) / AudioClipSetup.EndFadeDuration).Between(0, 1);
+            // Track start fade?
+            if (AudioTrackSetup.StartFade && audioTime <= AudioTrackSetup.StartFadeDuration)
+                volume *= (audioTime / AudioTrackSetup.StartFadeDuration).Between(0, 1);
+            // Track end fade?
+            if (AudioTrackSetup.EndFade && audioTime + AudioTrackSetup.EndFadeDuration >= audioLength)
+                volume *= ((audioLength - audioTime) / AudioTrackSetup.EndFadeDuration).Between(0, 1);
 
             if (AudioPlaylistSetup != null)
             {
@@ -179,29 +179,29 @@ namespace Mixin.Utils.Audio
         public AudioPlaylistSetup AudioPlaylistSetup => AudioPlaylistPlayer?.AudioPlaylistSetup;
 
         /// <summary>
-        /// Takes AudioMixerGroup of the Playlist if present, otherwise the one from the Clip.
+        /// Takes AudioMixerGroup of the Playlist if present, otherwise the one from the Track.
         /// </summary>
-        public AudioMixerGroup AudioMixerGroup => AudioPlaylistSetup?.AudioMixerGroup ?? AudioClipSetup.AudioMixerGroup;
+        public AudioMixerGroup AudioMixerGroup => AudioPlaylistSetup?.AudioMixerGroup ?? AudioTrackSetup.AudioMixerGroup;
         /// <summary>
-        /// The resulting base volume from the Clip and Playlist if present.
+        /// The resulting base volume from the Track and Playlist if present.
         /// </summary>
-        public float Volume => AudioClipSetup.Volume * (AudioPlaylistSetup?.Volume ?? 1);
+        public float Volume => AudioTrackSetup.Volume * (AudioPlaylistSetup?.Volume ?? 1);
         /// <summary>
-        /// The resulting base pitch from the Clip and Playlist if present.
+        /// The resulting base pitch from the Track and Playlist if present.
         /// </summary>
-        public float Pitch => AudioClipSetup.Pitch * (AudioPlaylistSetup?.Pitch ?? 1);
+        public float Pitch => AudioTrackSetup.Pitch * (AudioPlaylistSetup?.Pitch ?? 1);
         /// <summary>
-        /// Has the clip a fade at the start? <br/>
+        /// Has the Track a fade at the start? <br/>
         /// Also consideres the fade from the Playlist if present.
         /// </summary>
-        public bool StartFade => AudioClipSetup.StartFade || (AudioPlaylistSetup?.FadeIn ?? false);
+        public bool StartFade => AudioTrackSetup.StartFade || (AudioPlaylistSetup?.FadeIn ?? false);
         /// <summary>
-        /// Has the clip a fade at the end? <br/>
+        /// Has the Track a fade at the end? <br/>
         /// Also consideres the fade from the Playlist if present.
         /// </summary>
-        public bool EndFade => AudioClipSetup.EndFade || (AudioPlaylistSetup?.FadeOut ?? false);
+        public bool EndFade => AudioTrackSetup.EndFade || (AudioPlaylistSetup?.FadeOut ?? false);
         /// <summary>
-        /// Has the clip a fade at the start or end? <br/>
+        /// Has the Track a fade at the start or end? <br/>
         /// Also consideres the fade from the Playlist if present.
         /// </summary>
         public bool BoundFade => StartFade || EndFade;
@@ -210,7 +210,7 @@ namespace Mixin.Utils.Audio
         /// </summary>
         public bool PlaylistStopping => AudioPlaylistPlayer?.Stopping ?? false;
         /// <summary>
-        /// Has the clip a fade at the start or end or is currently in the process of stopping? <br/>
+        /// Has the Track a fade at the start or end or is currently in the process of stopping? <br/>
         /// Also consideres the fade from the Playlist if present.
         /// </summary>
         public bool FadeOrStop => BoundFade || _stopping || PlaylistStopping;

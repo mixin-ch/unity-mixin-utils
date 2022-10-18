@@ -19,7 +19,7 @@ namespace Mixin.Utils.Audio
         [Min(0)]
         public float FadeOutDuration;
 
-        public List<AudioClipSetup> AudioClipSetups;
+        public List<AudioTrackSetup> AudioTrackSetups;
 
         public bool FadeIn => FadeInDuration > 0;
         public bool FadeOut => FadeOutDuration > 0;

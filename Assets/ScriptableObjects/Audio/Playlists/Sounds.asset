@@ -19,7 +19,7 @@ MonoBehaviour:
   _pitch: 1.5
   _fadeInDuration: 1
   _fadeOutDuration: 1
-  _audioClipSetups:
+  _audioTrackSetups:
   - {fileID: 11400000, guid: 93c93d497b2d06c48800a2a00ef3e64e, type: 2}
   - {fileID: 11400000, guid: d4156cc700340e8488db68983e903248, type: 2}
   - {fileID: 11400000, guid: d8e25ea3fb8379e4883799f1fa58c47a, type: 2}

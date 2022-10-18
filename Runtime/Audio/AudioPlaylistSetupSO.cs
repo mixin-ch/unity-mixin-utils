@@ -58,7 +58,7 @@ namespace Mixin.Utils.Audio
         /// </summary>
         [Tooltip("The list of Tracks of this Playlist.")]
         [SerializeField]
-        private List<AudioClipSetupSO> _audioClipSetups;
+        private List<AudioTrackSetupSO> _audioTrackSetups;
 
         /// <summary>
         /// Converts to an AudioPlaylistSetup Object.
@@ -75,12 +75,12 @@ namespace Mixin.Utils.Audio
             audioPlaylistSetup.FadeInDuration = _fadeInDuration;
             audioPlaylistSetup.FadeOutDuration = _fadeOutDuration;
 
-            List<AudioClipSetup> audioClipSetups = new List<AudioClipSetup>();
+            List<AudioTrackSetup> audioTrackSetups = new List<AudioTrackSetup>();
 
-            foreach (AudioClipSetupSO audioClipSetupSO in _audioClipSetups)
-                audioClipSetups.Add(audioClipSetupSO.ToAudioClipSetup());
+            foreach (AudioTrackSetupSO audioTrackSetupSO in _audioTrackSetups)
+                audioTrackSetups.Add(audioTrackSetupSO.ToAudioTrackSetup());
 
-            audioPlaylistSetup.AudioClipSetups = audioClipSetups;
+            audioPlaylistSetup.AudioTrackSetups = audioTrackSetups;
 
             return audioPlaylistSetup;
         }

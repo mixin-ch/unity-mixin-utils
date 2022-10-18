@@ -5,20 +5,20 @@ namespace Mixin.Utils.Audio
 {
     public class AudioManager : Singleton<AudioManager>
     {
-        private List<AudioClipPlayer> _audioClipPlayers = new List<AudioClipPlayer>();
+        private List<AudioTrackPlayer> _audioTrackPlayers = new List<AudioTrackPlayer>();
         public List<AudioPlaylistPlayer> _audioPlaylistPlayers = new List<AudioPlaylistPlayer>();
 
         void Update()
         {
-            for (int i = 0; i < _audioClipPlayers.Count; i++)
+            for (int i = 0; i < _audioTrackPlayers.Count; i++)
             {
-                AudioClipPlayer audioClipPlayer = _audioClipPlayers[i];
-                audioClipPlayer.Tick(Time.deltaTime);
+                AudioTrackPlayer audioTrackPlayer = _audioTrackPlayers[i];
+                audioTrackPlayer.Tick(Time.deltaTime);
 
-                if (!audioClipPlayer.Running)
+                if (!audioTrackPlayer.Running)
                 {
-                    Destroy(audioClipPlayer.AudioSource);
-                    _audioClipPlayers.RemoveAt(i);
+                    Destroy(audioTrackPlayer.AudioSource);
+                    _audioTrackPlayers.RemoveAt(i);
                     i--;
                 }
             }
@@ -29,10 +29,10 @@ namespace Mixin.Utils.Audio
 
         public void StopAllAudio()
         {
-            while (_audioClipPlayers.Count > 0)
+            while (_audioTrackPlayers.Count > 0)
             {
-                Destroy(_audioClipPlayers[0].AudioSource);
-                _audioClipPlayers.RemoveAt(0);
+                Destroy(_audioTrackPlayers[0].AudioSource);
+                _audioTrackPlayers.RemoveAt(0);
             }
 
             while (_audioPlaylistPlayers.Count > 0)
@@ -42,22 +42,22 @@ namespace Mixin.Utils.Audio
             }
         }
 
-        public AudioClipPlayer Play(AudioClipSetup audioClipSetup)
+        public AudioTrackPlayer Play(AudioTrackSetup audioTrackSetup)
         {
-            return Play(audioClipSetup, null);
+            return Play(audioTrackSetup, null);
         }
 
-        public AudioClipPlayer Play(AudioClipSetup audioClipSetup, AudioPlaylistPlayer audioPlaylistPlayer)
+        public AudioTrackPlayer Play(AudioTrackSetup audioTrackSetup, AudioPlaylistPlayer audioPlaylistPlayer)
         {
-            if (audioClipSetup == null)
+            if (audioTrackSetup == null)
                 return null;
 
             AudioSource audioSource = gameObject.AddComponent<AudioSource>();
-            AudioClipPlayer audioClipPlayer = AudioClipPlayer.Create(audioSource, audioClipSetup, audioPlaylistPlayer);
-            audioClipPlayer.Play();
-            _audioClipPlayers.Add(audioClipPlayer);
+            AudioTrackPlayer audioTrackPlayer = AudioTrackPlayer.Create(audioSource, audioTrackSetup, audioPlaylistPlayer);
+            audioTrackPlayer.Play();
+            _audioTrackPlayers.Add(audioTrackPlayer);
 
-            return audioClipPlayer;
+            return audioTrackPlayer;
         }
 
         public AudioPlaylistPlayer MakePlaylist(AudioPlaylistSetup audioPlaylistSetup)

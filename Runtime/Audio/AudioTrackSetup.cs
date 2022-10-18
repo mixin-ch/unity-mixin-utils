@@ -3,31 +3,31 @@ using UnityEngine.Audio;
 
 namespace Mixin.Utils.Audio
 {
-    /// <inheritdoc cref="AudioClipSetupSO"/>
+    /// <inheritdoc cref="AudioTrackSetupSO"/>
     [System.Serializable]
-    public class AudioClipSetup
+    public class AudioTrackSetup
     {
-        /// <inheritdoc cref="AudioClipSetupSO._audioClip"/>
+        /// <inheritdoc cref="AudioTrackSetupSO._audioClip"/>
         public AudioClip AudioClip;
 
-        /// <inheritdoc cref="AudioClipSetupSO._audioMixerGroup"/>
+        /// <inheritdoc cref="AudioTrackSetupSO._audioMixerGroup"/>
         public AudioMixerGroup AudioMixerGroup;
 
-        /// <inheritdoc cref="AudioClipSetupSO._volume"/>
+        /// <inheritdoc cref="AudioTrackSetupSO._volume"/>
         [Range(0, 1)]
         public float Volume = 1;
 
-        /// <inheritdoc cref="AudioClipSetupSO._pitch"/>
+        /// <inheritdoc cref="AudioTrackSetupSO._pitch"/>
         public float Pitch = 1;
 
-        /// <inheritdoc cref="AudioClipSetupSO._loop"/>
+        /// <inheritdoc cref="AudioTrackSetupSO._loop"/>
         public bool Loop;
 
-        /// <inheritdoc cref="AudioClipSetupSO._startFadeDuration"/>
+        /// <inheritdoc cref="AudioTrackSetupSO._startFadeDuration"/>
         [Min(0)]
         public float StartFadeDuration;
 
-        /// <inheritdoc cref="AudioClipSetupSO._endFadeDuration"/>
+        /// <inheritdoc cref="AudioTrackSetupSO._endFadeDuration"/>
         [Min(0)]
         public float EndFadeDuration;
 
