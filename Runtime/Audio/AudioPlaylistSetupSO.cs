@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace Mixin.Utils.Audio
+namespace Mixin.Audio
 {
     /// <summary>
     /// Data for playing an Audio Playlist.

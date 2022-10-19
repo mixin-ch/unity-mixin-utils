@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using Mixin.Utils;
 
-namespace Mixin.Utils.Audio
+namespace Mixin.Audio
 {
     /// <summary>
     /// Singleton for managing the playing of various Audio Tracks and Playlists.
@@ -9,7 +10,7 @@ namespace Mixin.Utils.Audio
     public class AudioManager : Singleton<AudioManager>
     {
         private List<AudioTrackPlayer> _audioTrackPlayers = new List<AudioTrackPlayer>();
-        public List<AudioPlaylistPlayer> _audioPlaylistPlayers = new List<AudioPlaylistPlayer>();
+        private List<AudioPlaylistPlayer> _audioPlaylistPlayers = new List<AudioPlaylistPlayer>();
 
         void Update()
         {

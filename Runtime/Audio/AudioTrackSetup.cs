@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace Mixin.Utils.Audio
+namespace Mixin.Audio
 {
     /// <inheritdoc cref="AudioTrackSetupSO"/>
     [System.Serializable]

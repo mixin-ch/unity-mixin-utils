@@ -1,4 +1,4 @@
-using Mixin.Utils.Audio;
+using Mixin.Audio;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
