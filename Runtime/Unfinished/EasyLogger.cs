@@ -24,9 +24,18 @@ namespace Mixin
             Log(text, Color.white);
         }
 
-        public static void LogError(this string text)
+        /// <summary>
+        /// Adds loading points to the text.
+        /// </summary>
+        /// <param name="text"></param>
+        public static void LogProgress(this string text)
         {
-            Debug.LogError($"<color={MixinColorHex}>#Mixin </color>{text}");
+            Log(text + "...");
+        }
+
+        public static void LogSuccess(this string text)
+        {
+            Log(text, Color.green);
         }
 
         public static void LogWarning(this string text)
@@ -34,6 +43,11 @@ namespace Mixin
             Debug.LogWarning($"<color={MixinColorHex}>#Mixin </color>{text}");
         }
 
+
+        public static void LogError(this string text)
+        {
+            Debug.LogError($"<color={MixinColorHex}>#Mixin </color>{text}");
+        }
 
         /******/
         public static string FormatThousand(this int number)
