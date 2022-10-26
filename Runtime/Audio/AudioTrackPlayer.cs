@@ -7,7 +7,6 @@ namespace Mixin.Audio
     /// <summary>
     /// Plays and manages a single Audio Track.
     /// </summary>
-    [System.Serializable]
     public class AudioTrackPlayer
     {
         public AudioSource AudioSource { get; private set; }

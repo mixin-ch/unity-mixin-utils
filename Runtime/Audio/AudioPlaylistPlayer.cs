@@ -6,7 +6,6 @@ namespace Mixin.Audio
     /// <summary>
     /// Plays and manages a single Audio Playlist.
     /// </summary>
-    [System.Serializable]
     public class AudioPlaylistPlayer
     {
         public AudioPlaylistSetup AudioPlaylistSetup { get; private set; }
