@@ -31,46 +31,7 @@ namespace Mixin.Audio
                 _audioPlaylistPlayers[i].Tick(Time.deltaTime);
         }
 
-        /// <inheritdoc cref="StopAllAudio_Private"/>
-        public static void StopAllAudio()
-        {
-            Instance.StopAllAudio_Private();
-        }
-
-        /// <inheritdoc cref="Play_Private(AudioTrackSetup)"/>
-        public static AudioTrackPlayer Play(AudioTrackSetup audioTrackSetup)
-        {
-            return Instance.Play_Private(audioTrackSetup);
-        }
-
-        /// <inheritdoc cref="Play_Private(AudioTrackSetup, AudioPlaylistPlayer)"/>
-        public static AudioTrackPlayer Play(AudioTrackSetup audioTrackSetup, AudioPlaylistPlayer audioPlaylistPlayer)
-        {
-            return Instance.Play_Private(audioTrackSetup, audioPlaylistPlayer);
-        }
-
-        /// <inheritdoc cref="MakePlaylist_Private(AudioPlaylistSetup)"/>
-        public static AudioPlaylistPlayer MakePlaylist(AudioPlaylistSetup audioPlaylistSetup)
-        {
-            return Instance.MakePlaylist_Private(audioPlaylistSetup);
-        }
-
-        /// <inheritdoc cref="Play_Private(AudioPlaylistSetup)"/>
-        public static AudioPlaylistPlayer Play(AudioPlaylistSetup audioPlaylistSetup)
-        {
-            return Instance.Play_Private(audioPlaylistSetup);
-        }
-
-        /// <inheritdoc cref="RemovePlaylist_Private(AudioPlaylistPlayer)"/>
-        public static void RemovePlaylist(AudioPlaylistPlayer audioPlaylistPlayer)
-        {
-            Instance.RemovePlaylist_Private(audioPlaylistPlayer);
-        }
-
-        /// <summary>
-        /// Stops and removes all Audio Tracks and Audio Playlists.
-        /// </summary>
-        private void StopAllAudio_Private()
+        public void StopAllAudio()
         {
             while (_audioTrackPlayers.Count > 0)
             {
@@ -85,10 +46,10 @@ namespace Mixin.Audio
             }
         }
 
-        /// <inheritdoc cref="Play_Private(AudioTrackSetup, AudioPlaylistPlayer)"/>
-        private AudioTrackPlayer Play_Private(AudioTrackSetup audioTrackSetup)
+        /// <inheritdoc cref="Play(AudioTrackSetup, AudioPlaylistPlayer)"/>
+        public AudioTrackPlayer Play(AudioTrackSetup audioTrackSetup)
         {
-            return Play_Private(audioTrackSetup, null);
+            return Play(audioTrackSetup, null);
         }
 
         /// <summary>
@@ -97,7 +58,7 @@ namespace Mixin.Audio
         /// <param name="audioTrackSetup">The Setup of the Audio Track.</param>
         /// <param name="audioPlaylistPlayer">The Playlist playing this Track, if existing.</param>
         /// <returns>The Player managing the Audio Track.</returns>
-        private AudioTrackPlayer Play_Private(AudioTrackSetup audioTrackSetup, AudioPlaylistPlayer audioPlaylistPlayer)
+        public AudioTrackPlayer Play(AudioTrackSetup audioTrackSetup, AudioPlaylistPlayer audioPlaylistPlayer)
         {
             if (audioTrackSetup == null)
                 return null;
@@ -115,7 +76,7 @@ namespace Mixin.Audio
         /// </summary>
         /// <param name="audioPlaylistSetup">The Setup of the Audio Playlist.</param>
         /// <returns>The Player managing the Audio Playlist.</returns>
-        private AudioPlaylistPlayer MakePlaylist_Private(AudioPlaylistSetup audioPlaylistSetup)
+        public AudioPlaylistPlayer MakePlaylist(AudioPlaylistSetup audioPlaylistSetup)
         {
             if (audioPlaylistSetup == null)
                 return null;
@@ -131,9 +92,9 @@ namespace Mixin.Audio
         /// </summary>
         /// <param name="audioPlaylistSetup">The Setup of the Audio Playlist.</param>
         /// <returns>The Player managing the Audio Playlist.</returns>
-        private AudioPlaylistPlayer Play_Private(AudioPlaylistSetup audioPlaylistSetup)
+        public AudioPlaylistPlayer Play(AudioPlaylistSetup audioPlaylistSetup)
         {
-            AudioPlaylistPlayer audioPlaylistPlayer = MakePlaylist_Private(audioPlaylistSetup);
+            AudioPlaylistPlayer audioPlaylistPlayer = MakePlaylist(audioPlaylistSetup);
 
             if (audioPlaylistPlayer != null)
                 audioPlaylistPlayer.Play();
@@ -144,7 +105,7 @@ namespace Mixin.Audio
         /// <summary>
         /// Stops and Removes the given Playlist Player.
         /// </summary>
-        private void RemovePlaylist_Private(AudioPlaylistPlayer audioPlaylistPlayer)
+        public void RemovePlaylist(AudioPlaylistPlayer audioPlaylistPlayer)
         {
             if (audioPlaylistPlayer == null)
                 return;
