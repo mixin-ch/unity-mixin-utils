@@ -1,10 +1,7 @@
 {
     "name": "Mixin.mixin-utils.Tests",
     "rootNamespace": "",
-    "references": [
-        "GUID:b708ce3d2362bc049a7fb3b1afb84301",
-        "GUID:72360ac344346684e9e27a1a126f833a"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

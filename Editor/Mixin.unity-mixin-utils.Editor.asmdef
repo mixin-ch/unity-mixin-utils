@@ -1,0 +1,16 @@
+{
+    "name": "Mixin.unity-mixin-utils.Editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:72360ac344346684e9e27a1a126f833a"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
