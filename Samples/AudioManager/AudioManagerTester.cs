@@ -14,7 +14,7 @@ public class AudioManagerTester : MonoBehaviour
 
     private void Start()
     {
-        _audioPlaylistPlayer = AudioManager.Instance.Play(AudioPlaylist.ToAudioPlaylistSetup());
+        _audioPlaylistPlayer = AudioManager.Play(AudioPlaylist.ToAudioPlaylistSetup());
 
         _funcs.Add(First);
     }

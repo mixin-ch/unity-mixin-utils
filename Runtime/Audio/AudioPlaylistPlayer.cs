@@ -6,7 +6,6 @@ namespace Mixin.Audio
     /// <summary>
     /// Plays and manages a single Audio Playlist.
     /// </summary>
-    [System.Serializable]
     public class AudioPlaylistPlayer
     {
         public AudioPlaylistSetup AudioPlaylistSetup { get; private set; }
@@ -115,7 +114,7 @@ namespace Mixin.Audio
 
             AudioTrackSetup audioTrackSetup = _audioTracksToPlay[0];
             _audioTracksToPlay.RemoveAt(0);
-            _currentAudioTrackPlayer = AudioManager.Instance.Play(audioTrackSetup, this);
+            _currentAudioTrackPlayer = AudioManager.Play(audioTrackSetup, this);
         }
 
         /// <summary>
