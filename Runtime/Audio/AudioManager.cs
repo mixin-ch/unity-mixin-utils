@@ -31,6 +31,9 @@ namespace Mixin.Audio
                 _audioPlaylistPlayers[i].Tick(Time.deltaTime);
         }
 
+        /// <summary>
+        /// Stops and removes all Audio Tracks and Audio Playlists.
+        /// </summary>
         public void StopAllAudio()
         {
             while (_audioTrackPlayers.Count > 0)
