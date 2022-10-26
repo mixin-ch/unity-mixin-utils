@@ -4,9 +4,7 @@
   "displayName": "Mixin Utilities",
   "description": "This is the official Mixin Utillities Package for Unity. It makes our lifes easier.",
   "unity": "2021.1",
-  "dependencies": {
-    "com.domybest.mybox": "1.7.0"
-  },
+  "dependencies": {},
   "keywords": [
     "Mixin Games",
     "Utilities",
