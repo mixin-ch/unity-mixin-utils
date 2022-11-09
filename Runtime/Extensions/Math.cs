@@ -32,6 +32,16 @@ namespace Mixin.Utils
         public static double Between(this double value, double min, double max) { return value.LowerBound(min).UpperBound(max); }
 
         /// <summary>
+        /// Rounds the number.
+        /// </summary>
+        public static long Round(this double value) { return (long)System.Math.Round(value); }
+
+        /// <summary>
+        /// Rounds the number to the given number of decimals.
+        /// </summary>
+        public static double Round(this double value, int decimals) { return (double)System.Math.Round(value, decimals); }
+
+        /// <summary>
         /// Rounds the number down.
         /// </summary>
         public static long Floor(this double value) { return (long)System.Math.Floor(value); }
@@ -87,6 +97,12 @@ namespace Mixin.Utils
         public static long Between(this long value, float min, long max) { return (long)System.Math.Round(Between((double)value, min, max)); }
         /// <inheritdoc cref="Between(double, double, double)" />
         public static int Between(this int value, float min, int max) { return (int)Between((long)value, min, max); }
+
+        /// <inheritdoc cref="Round(double)" />
+        public static long Round(this float value) { return Round((double)value); }
+
+        /// <inheritdoc cref="Round(double, int)" />
+        public static double Round(this float value, int decimals) { return Round((double)value, decimals); }
 
         /// <inheritdoc cref="Floor(double)" />
         public static long Floor(this float value) { return Floor((double)value); }

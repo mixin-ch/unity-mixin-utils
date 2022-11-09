@@ -33,7 +33,10 @@ namespace Mixin.Utils
             return random.NextDouble() * (max - min) + min;
         }
 
-        /// <inheritdoc cref="Range(Random, double, double)" />
+        /// <summary>
+        /// Returns random whole number in range.
+        /// </summary>
+        /// <param name="min">inclusive</param>
         /// <param name="max">inclusive</param>
         public static long Range(this Random random, long min, long max)
         {
@@ -44,9 +47,6 @@ namespace Mixin.Utils
             return result;
         }
 
-        /// <inheritdoc cref="Range(Random, long, long)" />
-        public static int Range(this Random random, int min, int max) { return random.Next(min, max + 1); }
-
         /// <inheritdoc cref="RandomTrue(Random, double)" />
         public static bool RandomTrue(this float probability, Random random) { return RandomTrue(random, (double)probability); }
 
@@ -55,5 +55,8 @@ namespace Mixin.Utils
 
         /// <inheritdoc cref="Range(Random, double, double)" />
         public static double Range(this Random random, float min, float max) { return Range(random, (double)min, (double)max); }
+
+        /// <inheritdoc cref="Range(Random, long, long)" />
+        public static int Range(this Random random, int min, int max) { return random.Next(min, max + 1); }
     }
 }
