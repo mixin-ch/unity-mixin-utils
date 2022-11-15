@@ -33,19 +33,19 @@ namespace Mixin.Utils
         /// <returns></returns>
         public static float GetPercentageWithoutRound(float currentValue, float maxValue)
         {
-            return GetFraction(currentValue,maxValue) * 100;
+            return currentValue / maxValue * 100;
         }
 
         /// <summary>
-        /// Get the Fraction of two numbers. <br></br>
-        /// => 0.2
+        /// Get the Fraction of two numbers with rounded decimals. <br></br>
+        /// 4, 20, 1 => 0.2
         /// </summary>
         /// <param name="currentValue"></param>
         /// <param name="maxValue"></param>
         /// <returns></returns>
-        public static float GetFraction(float currentValue, float maxValue)
+        public static float GetFraction(float currentValue, float maxValue, int decimals)
         {
-            return currentValue / maxValue;
+            return RoundValueToDecimals(currentValue / maxValue, decimals);
         }
 
         /// <summary>
