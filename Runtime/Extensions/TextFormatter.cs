@@ -8,8 +8,8 @@ namespace Mixin.Utils
     public static class TextFormatter
     {
         /// <inheritdoc cref="GetPercentage(float, float, int)"/>
-        public static float GetPercentage(float currentValue, float maxValue) =>
-            GetPercentage(currentValue, maxValue, 0);
+        public static int GetPercentage(float currentValue, float maxValue) =>
+            (int)GetPercentage(currentValue, maxValue, 0);
 
         /// <summary>
         /// Get the percentage value with rounded numbers.
