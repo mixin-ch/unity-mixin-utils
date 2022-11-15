@@ -12,11 +12,11 @@ namespace Mixin.Utils
             GetPercentage(currentValue, maxValue, 0);
 
         /// <summary>
-        /// Get the percentage value.
+        /// Get the percentage value with rounded numbers.
         /// </summary>
         /// <param name="currentValue"></param>
         /// <param name="maxValue"></param>
-        /// <param name="decimals"></param>
+        /// <param name="decimals">Rounds to specified number of decimals.</param>
         /// <returns></returns>
         public static float GetPercentage(float currentValue, float maxValue, int decimals)
         {
