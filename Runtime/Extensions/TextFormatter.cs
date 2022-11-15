@@ -21,7 +21,7 @@ namespace Mixin.Utils
         public static float GetPercentage(float currentValue, float maxValue, int decimals)
         {
             float percentage = currentValue / maxValue * 100;
-            return RoundValueToDecimals(percentage, decimals);
+            return percentage.RoundValueToDecimals(decimals);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Mixin.Utils
         /// <param name="value"></param>
         /// <param name="decimals"></param>
         /// <returns></returns>
-        public static float RoundValueToDecimals(float value, int decimals)
+        public static float RoundValueToDecimals(this float value, int decimals)
         {
             return (float)System.Math.Round(value, decimals);
         }
@@ -65,7 +65,7 @@ namespace Mixin.Utils
         /// </summary>
         /// <param name="date"></param>
         /// <returns></returns>
-        public static string GetDateString(DateTime date)
+        public static string GetDateString(this DateTime date)
         {
             // Converts the object to string
             return string.Format("{0:D}", date);
