@@ -6,7 +6,7 @@ namespace Mixin.Utils
     /// <summary>
     /// Extensions for <see cref="List{T}"/>.
     /// </summary>
-    static class ListExtensions
+    public static class ListExtensions
     {
         /// <summary>
         /// Shuffles the list.
