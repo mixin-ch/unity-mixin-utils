@@ -6,7 +6,7 @@ namespace Mixin.Utils
     /// <summary>
     /// Extensions for <see cref="GameObject"/>.
     /// </summary>
-    static class GameObjectExtensions
+    public static class GameObjectExtensions
     {
         /// <summary>
         /// Destroys the children of the GameObject.

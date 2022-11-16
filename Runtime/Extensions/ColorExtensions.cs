@@ -8,7 +8,7 @@ namespace Mixin.Utils
     /// <summary>
     /// Extensions for <see cref="Color"/>.
     /// </summary>
-    static class ColorExtensions
+    public static class ColorExtensions
     {
         /// <summary>
         /// Inverses the RGB values.
