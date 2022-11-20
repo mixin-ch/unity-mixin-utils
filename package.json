@@ -1,8 +1,8 @@
 {
-  "name": "com.mixin.unity-utils",
-  "version": "1.0.0",
-  "displayName": "Mixin Utilities",
-  "description": "This is the official Mixin Utillities Package for Unity. It makes our lifes easier.",
+  "name": "com.mixin.unity-mixin-utils",
+  "version": "0.1.3",
+  "displayName": "Mixin Utils",
+  "description": "The official Mixin Utils Package for Unity. It makes our lifes easier.",
   "unity": "2021.1",
   "dependencies": {
     "com.domybest.mybox": "1.7.0"
