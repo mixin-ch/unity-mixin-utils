@@ -9,8 +9,8 @@ namespace Mixin
 {
     public class SceneManager : Singleton<SceneManager>
     {
-        public static event Action BeforeSceneLoad;
-        public static event Action OnSceneLoaded;
+        //public static event Action BeforeSceneLoad;
+        //public static event Action OnSceneLoaded;
 
 
         public static string GetCurrentScene()
