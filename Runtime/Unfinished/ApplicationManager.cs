@@ -10,10 +10,10 @@ public class ApplicationManager : Singleton<ApplicationManager>
         => Application.version;
 
 
-    private void OnApplicationQuit()
+    /*private void OnApplicationQuit()
     {
         //SaveManager.Instance.SaveAllData();
-    }
+    }*/
 
 
 
