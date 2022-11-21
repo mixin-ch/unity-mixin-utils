@@ -1,17 +1,20 @@
 using UnityEngine;
 
-/// <summary>
-/// Collection of Mixin.
-/// </summary>
-public class MixinCollection : MonoBehaviour
+namespace Mixin.Utils
 {
     /// <summary>
-    /// This just returns the official Mixin Color. <br></br>
-    /// Currently Color.red.
+    /// Collection of Mixin.
     /// </summary>
-    /// <returns></returns>
-    public static Color GetMixinColor()
+    public class MixinCollection : MonoBehaviour
     {
-        return Color.red;
+        /// <summary>
+        /// This just returns the official Mixin Color. <br></br>
+        /// Currently Color.red.
+        /// </summary>
+        /// <returns></returns>
+        public static Color GetMixinColor()
+        {
+            return Color.red;
+        }
     }
 }

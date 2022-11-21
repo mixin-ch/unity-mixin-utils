@@ -8,8 +8,8 @@ namespace Mixin.Utils
     /// </summary>
     public static class EasyLogger
     {
-        /// <inheritdoc cref="ColorExtensions.GetMixinColor()"/>
-        private static Color _mixinColor = ColorExtensions.GetMixinColor();
+        /// <inheritdoc cref="MixinCollection.GetMixinColor()"/>
+        private static Color _mixinColor = MixinCollection.GetMixinColor();
 
         /// <inheritdoc cref="ColorExtensions.GetMixinColor()"/>
         private static string _mixinColorHex = _mixinColor.ToHex();
