@@ -141,5 +141,56 @@ namespace Mixin.Utils
 
             return color;
         }
+
+        /// <summary>
+        /// Convert a Color to Hex String.
+        /// </summary>
+        /// <param name="color"></param>
+        /// <returns></returns>
+        public static string ToHex(this Color color)
+        {
+            return $"#{ColorUtility.ToHtmlStringRGB(color)}";
+        }
+
+        /// <summary>
+        /// This method returns a string with [color] tags. <br></br>
+        /// Very useful for TextMeshPro Texts. They will easily be colorized.
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="color"></param>
+        /// <returns></returns>
+        public static string Colorize(this string text, Color color)
+        {
+            return $"<color={color.ToHex()}>{text}</color>";
+        }
+
+        /// <inheritdoc cref="Colorize(string, Color)"/>
+        public static string ColorizeWhite(this string text)
+        {
+            return text.Colorize(Color.white);
+        }
+
+        /// <inheritdoc cref="Colorize(string, Color)"/>
+        public static string ColorizeBlack(this string text)
+        {
+            return text.Colorize(Color.black);
+        }
+
+        /// <summary>
+        /// Returns a new Color with the specified Saturation.
+        /// </summary>
+        /// <param name="color"></param>
+        /// <param name="saturation"></param>
+        /// <returns></returns>
+        public static Color SetSaturation(this Color color, float saturation)
+        {
+            float h, s, v;
+
+            Color.RGBToHSV(color, out h, out s, out v);
+
+            s = saturation;
+
+            return Color.HSVToRGB(h, s, v);
+        }
     }
 }
