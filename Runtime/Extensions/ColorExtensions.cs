@@ -153,16 +153,6 @@ namespace Mixin.Utils
         }
 
         /// <summary>
-        /// This just returns the official Mixin Color. <br></br>
-        /// Currently Color.red.
-        /// </summary>
-        /// <returns></returns>
-        public static Color GetMixinColor()
-        {
-            return Color.red;
-        }
-
-        /// <summary>
         /// This method returns a string with [color] tags. <br></br>
         /// Very useful for TextMeshPro Texts. They will easily be colorized.
         /// </summary>
@@ -187,16 +177,14 @@ namespace Mixin.Utils
         }
 
         /// <summary>
-        /// You can set a custom Saturation for the Color.
+        /// Returns a new Color with the specified Saturation.
         /// </summary>
         /// <param name="color"></param>
         /// <param name="saturation"></param>
         /// <returns></returns>
         public static Color SetSaturation(this Color color, float saturation)
         {
-            float h;
-            float s;
-            float v;
+            float h, s, v;
 
             Color.RGBToHSV(color, out h, out s, out v);
 
