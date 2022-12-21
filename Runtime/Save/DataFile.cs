@@ -1,19 +1,15 @@
 ﻿using System;
 
-[Serializable]
-public class DataFile
+namespace Mixin.Save
 {
-    /// <summary>
-    /// Important information for debugging and support
-    /// </summary>
-    public string GameVersion;
-    public int SaveCounter;
-    public DateTime LastSave;
-
-    public void SetFileInformation(string gameVersion)
+    [Serializable]
+    internal abstract class DataFile<Parent, Child> : DataFileBase
     {
-        GameVersion = gameVersion;
-        SaveCounter++;
-        LastSave = DateTime.Now;
+        public DataFile(Parent parent)
+        {
+
+        }
+
+        public abstract Child ToChild();
     }
 }

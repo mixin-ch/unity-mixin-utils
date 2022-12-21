@@ -16,36 +16,36 @@ namespace Mixin.Save
     /// </summary>
     public class DataFileManager<DataFile>
     {
-        private const string _FILENAME_PREFIX = "testmode_";
-
         /// <summary>
         /// The assosiated data
         /// </summary>
-        public DataFile Data;
+        protected DataFile _data;
 
-        protected string fileName = "";
-        protected FileType fileType = FileType.Binary;
+        protected string _fileName = "";
+        protected FileType _fileType = FileType.Binary;
+
+        public event Action OnBeforeSave;
+        public event Action OnBeforeLoad;
+        public event Action OnBeforeDelete;
 
         /// <summary>
         /// Called after trying to save file. Returns true if successful.
         /// </summary>
-        public event EventHandler<bool> OnDataSaved;
+        public event Action<bool> OnAfterSave;
         /// <summary>
         /// Called after trying to load file. Returns true if successful.
         /// </summary>
-        public event EventHandler<bool> OnDataLoaded;
+        public event Action<bool> OnAfterLoad;
         /// <summary>
         /// Called after trying to delete file. Returns true if successful.
         /// </summary>
-        public event EventHandler<bool> OnDataDeleted;
+        public event Action<bool> OnAfterDelete;
 
         public DataFileManager(string fileName, FileType fileType)
         {
-            this.fileName = fileName;
-            this.fileType = fileType;
+            _fileName = fileName;
+            _fileType = fileType;
         }
-
-        protected virtual void SetFileInformation() { }
 
         /// <summary>
         /// Save data to file.
@@ -54,20 +54,20 @@ namespace Mixin.Save
         /// </summary>
         public void Save()
         {
-            onBeforeSave();
+            OnBeforeSave?.Invoke();
 
             bool success = false;
 
             // Create file if it does not exist, or open existing file.
             FileStream fileStream = new FileStream(GetFileNameWithPath(), FileMode.Create);
 
-            object dataToWrite = Data;
+            object dataToWrite = _data;
 
-            if (useEnryption())
-                dataToWrite = encrypt(JsonUtility.ToJson(Data));
+            if (UseEnryption())
+                dataToWrite = Encrypt(JsonUtility.ToJson(_data));
 
             // Save data depending on FileType.
-            switch (fileType)
+            switch (_fileType)
             {
                 case FileType.Binary:
                     BinaryFormatter binaryFormatter = new BinaryFormatter();
@@ -78,14 +78,13 @@ namespace Mixin.Save
                     xmlSerializer.Serialize(fileStream, dataToWrite);
                     break;
                 default:
-                    throw new Exception($"FileType '{fileType}' is not defined. Save process is canceled");
+                    throw new Exception($"FileType '{_fileType}' is not defined. Save process is canceled");
             }
 
             fileStream.Close();
 
             success = true;
-            onDataSaved(success);
-            OnDataSaved?.Invoke(this, success);
+            OnAfterSave?.Invoke(success);
         }
 
         /// <summary>
@@ -105,8 +104,8 @@ namespace Mixin.Save
         /// </summary>
         public void Load(SerializationBinder serializationBinder)
         {
-            $"DataFileManager Load {fileName}".Log(Color.yellow);
-            onBeforeLoad();
+            $"DataFileManager Load {_fileName}".Log(Color.yellow);
+            OnBeforeLoad?.Invoke();
 
             bool success = false;
 
@@ -127,26 +126,26 @@ namespace Mixin.Save
                 try
                 {
                     // Load data depending on FileType.
-                    switch (fileType)
+                    switch (_fileType)
                     {
                         case FileType.Binary:
                             BinaryFormatter binaryFormatter = new BinaryFormatter();
                             if (serializationBinder != null)
                                 binaryFormatter.Binder = serializationBinder;
-                            if (useEnryption())
+                            if (UseEnryption())
                                 loadedEncryptedData = (string)binaryFormatter.Deserialize(fileStream);
                             else
                                 loadedData = (DataFile)binaryFormatter.Deserialize(fileStream);
                             break;
                         case FileType.XML:
                             XmlSerializer xmlSerializer = new XmlSerializer(typeof(DataFile));
-                            if (useEnryption())
+                            if (UseEnryption())
                                 loadedEncryptedData = (string)xmlSerializer.Deserialize(fileStream);
                             else
                                 loadedData = (DataFile)xmlSerializer.Deserialize(fileStream);
                             break;
                         default:
-                            throw new Exception($"FileType '{fileType}' is not defined. Save process is canceled");
+                            throw new Exception($"FileType '{_fileType}' is not defined. Save process is canceled");
                     }
                 }
                 catch (SerializationException)
@@ -159,18 +158,17 @@ namespace Mixin.Save
                     success = false;
                 }
 
-                if (useEnryption() && success)
-                    loadedData = JsonUtility.FromJson<DataFile>(decrypt(loadedEncryptedData));
+                if (UseEnryption() && success)
+                    loadedData = JsonUtility.FromJson<DataFile>(Decrypt(loadedEncryptedData));
 
                 fileStream.Close();
 
                 if (success)
-                    Data = loadedData;
+                    _data = loadedData;
             }
 
-            $"DataFileManager onDataLoaded {fileName}, success: {success}".Log(Color.yellow);
-            onDataLoaded(success);
-            OnDataLoaded?.Invoke(this, success);
+            $"DataFileManager onDataLoaded {_fileName}, success: {success}".Log(Color.yellow);
+            OnAfterLoad?.Invoke(success);
         }
 
         /// <summary>
@@ -180,7 +178,7 @@ namespace Mixin.Save
         /// </summary>
         public void Delete()
         {
-            onBeforeDelete();
+            OnBeforeDelete?.Invoke();
 
             bool success = false;
 
@@ -194,49 +192,12 @@ namespace Mixin.Save
             else
                 $"The file {GetFileNameWithPath()} does not exist.".LogWarning();
 
-            Data = default;
-            onDataDeleted(success);
-            OnDataDeleted?.Invoke(this, success);
+            _data = default;
+            OnAfterDelete?.Invoke(success);
         }
-
-        /// <summary>
-        /// Called before trying to save data.
-        /// </summary>
-        protected virtual void onBeforeSave()
-        {
-            SetFileInformation();
-        }
-
-        /// <summary>
-        /// Called when tried to save data.
-        /// </summary>
-        /// <param name="success">Was save successful?</param>
-        protected virtual void onDataSaved(bool success) { }
-
-        /// <summary>
-        /// Called before trying to load data.
-        /// </summary>
-        protected virtual void onBeforeLoad() { }
-
-        /// <summary>
-        /// Called when tried to load data.
-        /// </summary>
-        /// <param name="success">Was load successful?</param>
-        protected virtual void onDataLoaded(bool success) { }
-
-        /// <summary>
-        /// Called before trying to delete file.
-        /// </summary>
-        protected virtual void onBeforeDelete() { }
-
-        /// <summary>
-        /// Called when tried to delete file.
-        /// </summary>
-        /// <param name="success">Was delete successful?</param>
-        protected virtual void onDataDeleted(bool success) { }
 
         public string GetFileName()
-            => fileName;
+            => _fileName;
 
         public string GetFileNameWithoutExtension()
             => Path.GetFileNameWithoutExtension(GetFileNameWithPath().ToString());
@@ -262,17 +223,17 @@ namespace Mixin.Save
 
         #region Encryption + Decryption
 
-        protected virtual bool useEnryption() => false;
+        protected virtual bool UseEnryption() => false;
 
         /* DO NOT CHANGE THIS VALUE!! */
-        private const string salt = "ZUMdrrc9LhRSk0OdZt1R";
+        private const string _salt = "ZUMdrrc9LhRSk0OdZt1R";
 
-        private static string encrypt(string stringToEncrypt)
+        private static string Encrypt(string stringToEncrypt)
         {
             byte[] data = UTF8Encoding.UTF8.GetBytes(stringToEncrypt);
             using (MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider())
             {
-                byte[] key = md5.ComputeHash(UTF8Encoding.UTF8.GetBytes(salt));
+                byte[] key = md5.ComputeHash(UTF8Encoding.UTF8.GetBytes(_salt));
                 using (TripleDESCryptoServiceProvider cryptoServiceProvider = new TripleDESCryptoServiceProvider()
                 {
                     Key = key,
@@ -288,12 +249,12 @@ namespace Mixin.Save
             }
         }
 
-        private static string decrypt(string stringToDecrypt)
+        private static string Decrypt(string stringToDecrypt)
         {
             byte[] data = Convert.FromBase64String(stringToDecrypt);
             using (MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider())
             {
-                byte[] key = md5.ComputeHash(UTF8Encoding.UTF8.GetBytes(salt));
+                byte[] key = md5.ComputeHash(UTF8Encoding.UTF8.GetBytes(_salt));
                 using (TripleDESCryptoServiceProvider cryptoServiceProvider = new TripleDESCryptoServiceProvider()
                 {
                     Key = key,
