@@ -1,26 +1,41 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using Mixin.Utils;
 
-namespace Mixin
+namespace Mixin.Utils
 {
     public class SceneManager : Singleton<SceneManager>
     {
-        //public static event Action BeforeSceneLoad;
-        //public static event Action OnSceneLoaded;
+        private int _progress;
 
+        public static event Action<string> BeforeSceneLoad;
+        public static event Action<string> OnSceneLoaded;
 
-        public static string GetCurrentScene()
+        public IEnumerator LoadNewSceneAsync(string sceneName)
+        {
+            BeforeSceneLoad?.Invoke(sceneName);
+
+            AsyncOperation operation = 
+                UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName);
+
+            while (!operation.isDone)
+            {
+                float progress = Mathf.Clamp01(operation.progress / 0.9f);
+                _progress = Mathf.RoundToInt(progress * 100f);
+                yield return null;
+            }
+
+            OnSceneLoaded?.Invoke(sceneName);
+        }
+
+        public int GetProgress()
+        {
+            return _progress;
+        }
+
+        public static string GetCurrentSceneName()
         {
             return UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
         }
-
-        //public static string GetSceneName(SceneList sceneType)
-        //{
-        //    return sceneType.ToString();
-        //}
     }
 }
