@@ -2,7 +2,7 @@ using UnityEngine.UIElements;
 
 namespace Mixin.Utils
 {
-    public class UIBuildManager<T> : Singleton<T> where T : Singleton<T>
+    public abstract class UIBuildManager<T> : Singleton<T> where T : Singleton<T>
     {
         protected VisualElement _root;
 
