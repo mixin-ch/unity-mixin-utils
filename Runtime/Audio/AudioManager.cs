@@ -49,16 +49,16 @@ namespace Mixin.Audio
             }
         }
 
-        /// <inheritdoc cref="Play(AudioTrackSetup, AudioPlaylistPlayer)"/>
-        public AudioTrackPlayer Play(AudioTrackSetup audioTrackSetup)
+        /// <inheritdoc cref="PlayTrack(AudioTrackSetup, AudioPlaylistPlayer)"/>
+        public AudioTrackPlayer PlayTrack(AudioTrackSetup audioTrackSetup)
         {
-            return Play(audioTrackSetup, null);
+            return PlayTrack(audioTrackSetup, null);
         }
 
-        /// <inheritdoc cref="Play(AudioTrackSetup)"/>
-        public AudioTrackPlayer Play(AudioTrackSetupSO audioTrackSetup)
+        /// <inheritdoc cref="PlayTrack(AudioTrackSetup)"/>
+        public AudioTrackPlayer PlayTrack(AudioTrackSetupSO audioTrackSetup)
         {
-            return Play(audioTrackSetup.ToAudioTrackSetup());
+            return PlayTrack(audioTrackSetup.ToAudioTrackSetup());
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace Mixin.Audio
         /// <param name="audioTrackSetup">The Setup of the Audio Track.</param>
         /// <param name="audioPlaylistPlayer">The Playlist playing this Track, if existing.</param>
         /// <returns>The Player managing the Audio Track.</returns>
-        public AudioTrackPlayer Play(AudioTrackSetup audioTrackSetup, AudioPlaylistPlayer audioPlaylistPlayer)
+        internal AudioTrackPlayer PlayTrack(AudioTrackSetup audioTrackSetup, AudioPlaylistPlayer audioPlaylistPlayer)
         {
             if (audioTrackSetup == null)
                 return null;
@@ -85,7 +85,7 @@ namespace Mixin.Audio
         /// </summary>
         /// <param name="audioPlaylistSetup">The Setup of the Audio Playlist.</param>
         /// <returns>The Player managing the Audio Playlist.</returns>
-        public AudioPlaylistPlayer MakePlaylist(AudioPlaylistSetup audioPlaylistSetup)
+        public AudioPlaylistPlayer MakePlaylistPlayer(AudioPlaylistSetup audioPlaylistSetup)
         {
             if (audioPlaylistSetup == null)
                 return null;
@@ -96,10 +96,10 @@ namespace Mixin.Audio
             return audioPlaylistPlayer;
         }
 
-        /// <inheritdoc cref="MakePlaylist(AudioPlaylistSetup)"/>
-        public AudioPlaylistPlayer MakePlaylist(AudioPlaylistSetupSO audioPlaylistSetup)
+        /// <inheritdoc cref="MakePlaylistPlayer(AudioPlaylistSetup)"/>
+        public AudioPlaylistPlayer MakePlaylistPlayer(AudioPlaylistSetupSO audioPlaylistSetup)
         {
-            return MakePlaylist(audioPlaylistSetup.ToAudioPlaylistSetup());
+            return MakePlaylistPlayer(audioPlaylistSetup.ToAudioPlaylistSetup());
         }
 
         /// <summary>
@@ -107,9 +107,9 @@ namespace Mixin.Audio
         /// </summary>
         /// <param name="audioPlaylistSetup">The Setup of the Audio Playlist.</param>
         /// <returns>The Player managing the Audio Playlist.</returns>
-        public AudioPlaylistPlayer Play(AudioPlaylistSetup audioPlaylistSetup)
+        public AudioPlaylistPlayer PlayPlaylist(AudioPlaylistSetup audioPlaylistSetup)
         {
-            AudioPlaylistPlayer audioPlaylistPlayer = MakePlaylist(audioPlaylistSetup);
+            AudioPlaylistPlayer audioPlaylistPlayer = MakePlaylistPlayer(audioPlaylistSetup);
 
             if (audioPlaylistPlayer != null)
                 audioPlaylistPlayer.Play();
@@ -117,10 +117,10 @@ namespace Mixin.Audio
             return audioPlaylistPlayer;
         }
 
-        /// <inheritdoc cref="Play(AudioPlaylistSetup)"/>
-        public AudioPlaylistPlayer Play(AudioPlaylistSetupSO audioPlaylistSetup)
+        /// <inheritdoc cref="PlayPlaylist(AudioPlaylistSetup)"/>
+        public AudioPlaylistPlayer PlayPlaylist(AudioPlaylistSetupSO audioPlaylistSetup)
         {
-            return Play(audioPlaylistSetup.ToAudioPlaylistSetup());
+            return PlayPlaylist(audioPlaylistSetup.ToAudioPlaylistSetup());
         }
 
         /// <summary>

@@ -123,7 +123,7 @@ namespace Mixin.Audio
 
             AudioTrackSetup audioTrackSetup = _audioTracksToPlay[0];
             _audioTracksToPlay.RemoveAt(0);
-            _currentAudioTrackPlayer = AudioManager.Instance.Play(audioTrackSetup, this);
+            _currentAudioTrackPlayer = AudioManager.Instance.PlayTrack(audioTrackSetup, this);
         }
 
         /// <summary>
