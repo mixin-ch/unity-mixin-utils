@@ -6,14 +6,19 @@ namespace Mixin.Utils
 {
     public class SceneManager : Singleton<SceneManager>
     {
+        private bool _isLoading;
         private int _progress;
 
-        public static event Action<string> BeforeSceneLoad;
+        public bool IsLoading { get => _isLoading;  }
+        public int Progress { get => _progress;}
+
+        public static event Action<string> OnBeforeSceneLoad;
         public static event Action<string> OnSceneLoaded;
 
         public IEnumerator LoadNewSceneAsync(string sceneName)
         {
-            BeforeSceneLoad?.Invoke(sceneName);
+            OnBeforeSceneLoad?.Invoke(sceneName);
+            _isLoading = true;
 
             AsyncOperation operation = 
                 UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName);
@@ -25,12 +30,8 @@ namespace Mixin.Utils
                 yield return null;
             }
 
+            _isLoading = false;
             OnSceneLoaded?.Invoke(sceneName);
-        }
-
-        public int GetProgress()
-        {
-            return _progress;
         }
 
         public static string GetCurrentSceneName()
