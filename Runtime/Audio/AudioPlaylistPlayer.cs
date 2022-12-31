@@ -15,6 +15,12 @@ namespace Mixin.Audio
         /// </summary>
         public bool Running { get; private set; }
 
+        private bool _paused;
+        /// <summary>
+        /// Is the Playlist currently paused?
+        /// </summary>
+        public bool Paused { get => _paused; }
+
         /// <summary>
         /// Has the Playlist Player been ordered to stop?
         /// </summary>
@@ -49,7 +55,7 @@ namespace Mixin.Audio
         /// </summary>
         private AudioTrackPlayer _currentAudioTrackPlayer;
 
-        public static AudioPlaylistPlayer Create(AudioPlaylistSetup audioPlaylistSetup)
+        internal static AudioPlaylistPlayer Create(AudioPlaylistSetup audioPlaylistSetup)
         {
             AudioPlaylistPlayer audioPlaylistPlayer = new AudioPlaylistPlayer();
             audioPlaylistPlayer.AudioPlaylistSetup = audioPlaylistSetup;
@@ -63,6 +69,8 @@ namespace Mixin.Audio
         public void Tick(float time)
         {
             if (!Running)
+                return;
+            if (_paused)
                 return;
 
             if (_stopping)
@@ -95,6 +103,7 @@ namespace Mixin.Audio
         public void Play()
         {
             _stopping = false;
+            _paused = false;
             _stopDuration = 0;
             _time = 0;
             Running = true;
@@ -146,6 +155,46 @@ namespace Mixin.Audio
                 _currentAudioTrackPlayer.Stop();
                 Running = false;
             }
+        }
+
+        /// <summary>
+        /// Pause the Playlist.
+        /// </summary>
+        public void Pause()
+        {
+            _paused = true;
+
+            if (_currentAudioTrackPlayer == null)
+                return;
+
+            _currentAudioTrackPlayer.Stop();
+        }
+
+        /// <summary>
+        /// Unpause the Playlist.
+        /// </summary>
+        public void Unpause()
+        {
+            if (!Running)
+                return;
+
+            _paused = false;
+
+            if (_currentAudioTrackPlayer == null)
+                return;
+
+            _currentAudioTrackPlayer.Play();
+        }
+
+        /// <summary>
+        /// Pause or unpause the Playlist.
+        /// </summary>
+        public void Toggle()
+        {
+            if (_paused)
+                Unpause();
+            else
+                Pause();
         }
 
         /// <summary>
