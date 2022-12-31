@@ -55,6 +55,12 @@ namespace Mixin.Audio
             return Play(audioTrackSetup, null);
         }
 
+        /// <inheritdoc cref="Play(AudioTrackSetup)"/>
+        public AudioTrackPlayer Play(AudioTrackSetupSO audioTrackSetup)
+        {
+            return Play(audioTrackSetup.ToAudioTrackSetup());
+        }
+
         /// <summary>
         /// Plays An Audio Track with the specified Setup.
         /// </summary>
@@ -90,6 +96,12 @@ namespace Mixin.Audio
             return audioPlaylistPlayer;
         }
 
+        /// <inheritdoc cref="MakePlaylist(AudioPlaylistSetup)"/>
+        public AudioPlaylistPlayer MakePlaylist(AudioPlaylistSetupSO audioPlaylistSetup)
+        {
+            return MakePlaylist(audioPlaylistSetup.ToAudioPlaylistSetup());
+        }
+
         /// <summary>
         /// Plays An Audio Playlist with the specified Setup.
         /// </summary>
@@ -103,6 +115,12 @@ namespace Mixin.Audio
                 audioPlaylistPlayer.Play();
 
             return audioPlaylistPlayer;
+        }
+
+        /// <inheritdoc cref="Play(AudioPlaylistSetup)"/>
+        public AudioPlaylistPlayer Play(AudioPlaylistSetupSO audioPlaylistSetup)
+        {
+            return Play(audioPlaylistSetup.ToAudioPlaylistSetup());
         }
 
         /// <summary>
