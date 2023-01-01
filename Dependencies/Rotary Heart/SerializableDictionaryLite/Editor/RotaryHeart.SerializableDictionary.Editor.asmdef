@@ -1,8 +1,9 @@
 {
-    "name": "Mixin.unity-mixin-utils.Editor",
+    "name": "RotaryHeart.SerializableDictionary.Editor",
     "rootNamespace": "",
     "references": [
-        "GUID:72360ac344346684e9e27a1a126f833a"
+        "GUID:10ebc479cc081044d87faf0f7bd87988",
+        "GUID:b708ce3d2362bc049a7fb3b1afb84301"
     ],
     "includePlatforms": [
         "Editor"
