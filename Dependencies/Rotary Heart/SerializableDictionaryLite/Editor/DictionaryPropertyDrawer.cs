@@ -16,7 +16,7 @@ namespace RotaryHeart.Lib.SerializableDictionary
         SerializedProperty KeysProp;
         SerializedProperty ValuesProp;
 
-        readonly GUIContent idContent = new GUIContent("Key");
+        readonly GUIContent idContent = new GUIContent("Id");
         readonly GUIContent valueContent = new GUIContent("Value");
         readonly GUIStyle tooTipStyle = new GUIStyle("Tooltip");
 
