@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
 namespace Mixin.Utils
 {
-    public class ApplicationManager : Singleton<ApplicationManager>
+    public abstract class ApplicationManagerBase : Singleton<ApplicationManagerBase>
     {
         public static string GetGameVersion()
         {
