@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace Mixin.Audio
+namespace Mixin.Utils.Audio
 {
     /// <inheritdoc cref="AudioPlaylistSetupSO"/>
     [System.Serializable]

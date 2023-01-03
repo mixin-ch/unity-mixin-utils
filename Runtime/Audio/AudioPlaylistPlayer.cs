@@ -1,7 +1,7 @@
 ﻿using Mixin.Utils;
 using System.Collections.Generic;
 
-namespace Mixin.Audio
+namespace Mixin.Utils.Audio
 {
     /// <summary>
     /// Plays and manages a single Audio Playlist.

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Mixin.Utils;
 
-namespace Mixin.Audio
+namespace Mixin.Utils.Audio
 {
     /// <summary>
     /// Singleton for managing the playing of various Audio Tracks and Playlists.

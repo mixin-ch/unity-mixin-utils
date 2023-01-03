@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Audio;
 
-namespace Mixin.Audio
+namespace Mixin.Utils.Audio
 {
     /// <summary>
     /// Plays and manages a single Audio Track.
