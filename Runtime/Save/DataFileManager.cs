@@ -3,17 +3,14 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Xml.Serialization;
 using UnityEngine;
-using System.Text;
-using System.Security.Cryptography;
 using System.Runtime.Serialization;
-using Mixin.Utils;
 
-namespace Mixin.Save
+namespace Mixin.Utils.Save
 {
-    [Serializable]
     /// <summary>
     /// Manages data from a specific file.
     /// </summary>
+    [Serializable]
     public class DataFileManager<DataFile>
     {
         /// <summary>
@@ -21,8 +18,14 @@ namespace Mixin.Save
         /// </summary>
         protected DataFile _data;
 
-        protected string _fileName = "";
+        /// <summary>
+        /// The File Name without extension.
+        /// </summary>
+        protected string _fileName = "default";
         protected FileType _fileType = FileType.Binary;
+        protected string _fileVersion;
+        protected bool _useEncryption;
+        protected string _salt;
 
         public event Action OnBeforeSave;
         public event Action OnBeforeLoad;
@@ -41,10 +44,22 @@ namespace Mixin.Save
         /// </summary>
         public event Action<bool> OnAfterDelete;
 
-        public DataFileManager(string fileName, FileType fileType)
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="fileType"></param>
+        /// <param name="salt">Default is set to null. When entering a salt, 
+        /// it will automatically encrypt your data.</param>
+        public DataFileManager(string fileName, FileType fileType, string fileVersion, string salt = null)
         {
             _fileName = fileName;
             _fileType = fileType;
+            _fileVersion = fileVersion;
+            _salt = salt;
+
+            if (salt != string.Empty)
+                _useEncryption = true;
         }
 
         /// <summary>
@@ -59,12 +74,12 @@ namespace Mixin.Save
             bool success = false;
 
             // Create file if it does not exist, or open existing file.
-            FileStream fileStream = new FileStream(GetFileNameWithPath(), FileMode.Create);
+            FileStream fileStream = new FileStream(GetFileNameWithPathAndExtension(), FileMode.Create);
 
             object dataToWrite = _data;
 
-            if (UseEnryption())
-                dataToWrite = Encrypt(JsonUtility.ToJson(_data));
+            if (_useEncryption)
+                dataToWrite = Encrypter.Encrypt(JsonUtility.ToJson(_data), _salt);
 
             // Save data depending on FileType.
             switch (_fileType)
@@ -112,14 +127,13 @@ namespace Mixin.Save
             // File does not exist.
             if (!ThisFileExists())
             {
-                $"The file {GetFileNameWithPath()} does not exist.".LogWarning();
+                $"The file {GetFileNameWithPathAndExtension()} does not exist.".LogWarning();
             }
             // File does exist.
             else
             {
-                success = true;
                 // Open existing file.
-                FileStream fileStream = new FileStream(GetFileNameWithPath(), FileMode.Open);
+                FileStream fileStream = new FileStream(GetFileNameWithPathAndExtension(), FileMode.Open);
                 DataFile loadedData = default;
                 string loadedEncryptedData = "";
 
@@ -132,14 +146,14 @@ namespace Mixin.Save
                             BinaryFormatter binaryFormatter = new BinaryFormatter();
                             if (serializationBinder != null)
                                 binaryFormatter.Binder = serializationBinder;
-                            if (UseEnryption())
+                            if (_useEncryption)
                                 loadedEncryptedData = (string)binaryFormatter.Deserialize(fileStream);
                             else
                                 loadedData = (DataFile)binaryFormatter.Deserialize(fileStream);
                             break;
                         case FileType.XML:
                             XmlSerializer xmlSerializer = new XmlSerializer(typeof(DataFile));
-                            if (UseEnryption())
+                            if (_useEncryption)
                                 loadedEncryptedData = (string)xmlSerializer.Deserialize(fileStream);
                             else
                                 loadedData = (DataFile)xmlSerializer.Deserialize(fileStream);
@@ -147,6 +161,8 @@ namespace Mixin.Save
                         default:
                             throw new Exception($"FileType '{_fileType}' is not defined. Save process is canceled");
                     }
+
+                    success = true;
                 }
                 catch (SerializationException)
                 {
@@ -158,8 +174,8 @@ namespace Mixin.Save
                     success = false;
                 }
 
-                if (UseEnryption() && success)
-                    loadedData = JsonUtility.FromJson<DataFile>(Decrypt(loadedEncryptedData));
+                if (_useEncryption && success)
+                    loadedData = JsonUtility.FromJson<DataFile>(Encrypter.Decrypt(loadedEncryptedData, _salt));
 
                 fileStream.Close();
 
@@ -185,90 +201,30 @@ namespace Mixin.Save
             // File does exist.
             if (ThisFileExists())
             {
-                File.Delete(GetFileNameWithPath());
+                File.Delete(GetFileNameWithPathAndExtension());
                 success = true;
             }
             // File does not exist.
             else
-                $"The file {GetFileNameWithPath()} does not exist.".LogWarning();
+                $"The file {GetFileNameWithPathAndExtension()} does not exist.".LogWarning();
 
             _data = default;
             OnAfterDelete?.Invoke(success);
         }
 
-        public string GetFileName()
-            => _fileName;
-
-        public string GetFileNameWithoutExtension()
-            => Path.GetFileNameWithoutExtension(GetFileNameWithPath().ToString());
-
-        public string GetFileNameWithPath()
-            => $"{GetDataSavePath()}/{GetFileName()}";
-
-        // returns the base path where files will be saved
-        public string GetDataSavePath()
-            => Application.persistentDataPath;
-
-        public long GetFileSize()
-            => new FileInfo(GetFileNameWithPath()).Length;
-
-        public string GetFileSizeInBytes()
-            => $"{GetFileSize().FormatThousand()} Bytes";
-
-        public bool ThisFileExists()
-            => FileExists(GetFileNameWithPath());
-
-        protected static bool FileExists(string path)
-            => File.Exists(path);
-
-        #region Encryption + Decryption
-
-        protected virtual bool UseEnryption() => false;
-
-        /* DO NOT CHANGE THIS VALUE!! */
-        private const string _salt = "ZUMdrrc9LhRSk0OdZt1R";
-
-        private static string Encrypt(string stringToEncrypt)
+        protected string GetFileNameWithExtension()
         {
-            byte[] data = UTF8Encoding.UTF8.GetBytes(stringToEncrypt);
-            using (MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider())
-            {
-                byte[] key = md5.ComputeHash(UTF8Encoding.UTF8.GetBytes(_salt));
-                using (TripleDESCryptoServiceProvider cryptoServiceProvider = new TripleDESCryptoServiceProvider()
-                {
-                    Key = key,
-                    Mode = CipherMode.ECB,
-                    Padding = PaddingMode.PKCS7
-                }
-                    )
-                {
-                    ICryptoTransform cryptoTransform = cryptoServiceProvider.CreateEncryptor();
-                    byte[] result = cryptoTransform.TransformFinalBlock(data, 0, data.Length);
-                    return Convert.ToBase64String(result, 0, result.Length);
-                }
-            }
+            return $"{_fileName}.{ _fileType.ToString().ToLower()}";
         }
 
-        private static string Decrypt(string stringToDecrypt)
+        protected string GetFileNameWithPathAndExtension()
         {
-            byte[] data = Convert.FromBase64String(stringToDecrypt);
-            using (MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider())
-            {
-                byte[] key = md5.ComputeHash(UTF8Encoding.UTF8.GetBytes(_salt));
-                using (TripleDESCryptoServiceProvider cryptoServiceProvider = new TripleDESCryptoServiceProvider()
-                {
-                    Key = key,
-                    Mode = CipherMode.ECB,
-                    Padding = PaddingMode.PKCS7
-                }
-                    )
-                {
-                    ICryptoTransform cryptoTransform = cryptoServiceProvider.CreateDecryptor();
-                    byte[] result = cryptoTransform.TransformFinalBlock(data, 0, data.Length);
-                    return UTF8Encoding.UTF8.GetString(result);
-                }
-            }
+            return $"{FileUtils.GetDataSavePath()}/{GetFileNameWithExtension()}";
         }
-        #endregion
+
+        protected bool ThisFileExists()
+        {
+            return FileUtils.FileExists(GetFileNameWithPathAndExtension());
+        }
     }
 }

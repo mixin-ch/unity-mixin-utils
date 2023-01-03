@@ -1,9 +1,9 @@
 ﻿
-namespace Mixin.Save
+namespace Mixin.Utils.Save
 {
     public enum FileType
     {
-        Binary,
-        XML,
+        Binary = 0,
+        XML = 1,
     }
 }
