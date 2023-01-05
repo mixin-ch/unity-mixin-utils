@@ -7,7 +7,7 @@ namespace Mixin.Utils
     /// Alias for FormerlySerializedAs.
     /// </summary>
     public class PreviousName : FormerlySerializedAsAttribute
-{
+    {
         /// <inheritdoc cref="PreviousName"/>
         /// <param name="oldName">Name of the old Field.</param>
         public PreviousName(string oldName) : base(oldName)

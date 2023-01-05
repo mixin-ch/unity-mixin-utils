@@ -6,7 +6,7 @@ namespace Mixin.Utils
     /// <summary>
     /// Extensions for <see cref="Vector2"/>.
     /// </summary>
-    static class Vector2Extensions
+    public static class Vector2Extensions
     {
         /// <summary>
         /// Transforms radian value to Vector2.
