@@ -37,6 +37,11 @@ namespace Mixin.Utils
         public static long Round(this double value) { return (long)System.Math.Round(value); }
 
         /// <summary>
+        /// Rounds the number to an int.
+        /// </summary>
+        public static int RoundToInt(this double value) { return (int)Round(value); }
+
+        /// <summary>
         /// Rounds the number to the given number of decimals.
         /// </summary>
         public static double Round(this double value, int decimals) { return (double)System.Math.Round(value, decimals); }
@@ -47,9 +52,19 @@ namespace Mixin.Utils
         public static long Floor(this double value) { return (long)System.Math.Floor(value); }
 
         /// <summary>
+        /// Rounds the number down to an int.
+        /// </summary>
+        public static int FloorToInt(this double value) { return (int)Floor(value); }
+
+        /// <summary>
         /// Rounds the number up.
         /// </summary>
         public static long Ceiling(this double value) { return (long)System.Math.Ceiling(value); }
+
+        /// <summary>
+        /// Rounds the number up to an int.
+        /// </summary>
+        public static int CeilingToInt(this double value) { return (int)Ceiling(value); }
 
         /// <summary>
         /// Calculates a multiplier value from the amplifier.
@@ -101,14 +116,23 @@ namespace Mixin.Utils
         /// <inheritdoc cref="Round(double)" />
         public static long Round(this float value) { return Round((double)value); }
 
+        /// <inheritdoc cref="RoundToInt(double)" />
+        public static int RoundToInt(this float value) { return RoundToInt((double)value); }
+
         /// <inheritdoc cref="Round(double, int)" />
         public static double Round(this float value, int decimals) { return Round((double)value, decimals); }
 
         /// <inheritdoc cref="Floor(double)" />
         public static long Floor(this float value) { return Floor((double)value); }
 
+        /// <inheritdoc cref="FloorToInt(double)" />
+        public static int FloorToInt(this float value) { return FloorToInt((double)value); }
+
         /// <inheritdoc cref="Ceiling(double)" />
         public static long Ceiling(this float value) { return Ceiling((double)value); }
+
+        /// <inheritdoc cref="CeilingToInt(double)" />
+        public static int CeilingToInt(this float value) { return CeilingToInt((double)value); }
 
         /// <inheritdoc cref="AmplifierToMultiplier(double)" />
         public static float AmplifierToMultiplier(this float value) { return (float)AmplifierToMultiplier((double)value); }
