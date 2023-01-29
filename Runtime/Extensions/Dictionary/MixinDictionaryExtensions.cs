@@ -9,13 +9,24 @@ namespace Mixin.Utils
     public static class MixinDictionaryExtensions
     {
         /// <summary>
+        /// Creates a copy of a MixinDictionary.
+        /// </summary>
+        public static MixinDictionary<TKey, TValue> Copy<TKey, TValue>(this MixinDictionary<TKey, TValue> dictionary)
+        {
+            MixinDictionary<TKey, TValue> newDictionary = new MixinDictionary<TKey, TValue>();
+            foreach (KeyValuePair<TKey, TValue> pair in dictionary)
+                newDictionary.Add(pair.Key, pair.Value);
+            return newDictionary;
+        }
+
+        /// <summary>
         /// Converts any IDictionary to MixinDictionary.
         /// </summary>
         public static MixinDictionary<TKey, TValue> ConvertToMixinDictionary<TKey, TValue>(this IDictionary<TKey, TValue> dictionary)
         {
             MixinDictionary<TKey, TValue> newDictionary = new MixinDictionary<TKey, TValue>();
-            foreach (TKey key in dictionary.Keys)
-                newDictionary.Add(key, dictionary[key]);
+            foreach (KeyValuePair<TKey, TValue> pair in dictionary)
+                newDictionary.Add(pair.Key, pair.Value);
             return newDictionary;
         }
 
