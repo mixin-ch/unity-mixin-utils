@@ -1,6 +1,6 @@
 {
   "name": "com.mixin.unity-mixin-utils",
-  "version": "0.7.2",
+  "version": "0.8.0",
   "displayName": "Mixin Utils",
   "description": "The official Mixin Utils Package for Unity. It makes our lifes easier.",
   "unity": "2021.1",
