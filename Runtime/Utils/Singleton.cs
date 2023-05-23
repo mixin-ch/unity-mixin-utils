@@ -47,7 +47,7 @@ namespace Mixin.Utils
 #if !UNITY_EDITOR
 			    Destroy(gameObject);
 #endif
-                throw new System.Exception(string.Format("Instance of {0} already exists, removing {1}", GetType().FullName, ToString()));
+                /*throw new System.Exception(string.Format("Instance of {0} already exists, removing {1}", GetType().FullName, ToString()));*/
             }
         }
 
