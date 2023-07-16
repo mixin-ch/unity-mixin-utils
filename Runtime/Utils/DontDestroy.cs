@@ -1,22 +1,25 @@
 using UnityEngine;
 
-public class DontDestroy : MonoBehaviour
+namespace Mixin.Utils
 {
-    private static DontDestroy _instance;
-    public static DontDestroy Instance { get { return _instance; } }
-
-    void Awake()
+    public class DontDestroy : MonoBehaviour
     {
-        // If there isn't, keep this instance and mark it as persistent
-        DontDestroyOnLoad(gameObject);
+        private static DontDestroy _instance;
+        public static DontDestroy Instance { get { return _instance; } }
 
-        if (_instance != null && _instance != this)
+        void Awake()
         {
-            Destroy(this.gameObject);
-        }
-        else
-        {
-            _instance = this;
+            // If there isn't, keep this instance and mark it as persistent
+            DontDestroyOnLoad(gameObject);
+
+            if (_instance != null && _instance != this)
+            {
+                Destroy(this.gameObject);
+            }
+            else
+            {
+                _instance = this;
+            }
         }
     }
 }
