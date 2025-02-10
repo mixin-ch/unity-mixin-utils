@@ -70,7 +70,7 @@ namespace Mixin.Utils
             FieldInfo[] fields = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
 
             string output = "";
-            output += $"Logging fields of <b>{type.Name}</b>";
+            output += $"Logging fields of <b>{type.Name}</b>\n";
 
             foreach (FieldInfo field in fields)
             {
