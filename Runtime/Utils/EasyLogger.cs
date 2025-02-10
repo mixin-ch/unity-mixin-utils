@@ -1,3 +1,6 @@
+using System;
+using System.Reflection;
+using UnityEditorInternal;
 using UnityEngine;
 
 namespace Mixin.Utils
@@ -53,6 +56,29 @@ namespace Mixin.Utils
         public static void LogError(this string text)
         {
             Debug.LogError($"<color={_mixinColorHex}>#Mixin </color>{text}");
+        }
+
+        public static void LogObject(this object obj)
+        {
+            if (obj == null)
+            {
+                Log("Object is null.");
+                return;
+            }
+
+            Type type = obj.GetType();
+            FieldInfo[] fields = type.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+
+            string output = "";
+            output += $"Logging fields of <b>{type.Name}</b>";
+
+            foreach (FieldInfo field in fields)
+            {
+                object value = field.GetValue(obj);
+                output += $"{field.Name}: {value}\n";
+            }
+
+            Log(output);
         }
     }
 }
