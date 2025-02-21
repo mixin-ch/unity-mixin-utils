@@ -1,6 +1,5 @@
 using System;
 using System.Reflection;
-using UnityEditorInternal;
 using UnityEngine;
 
 namespace Mixin.Utils
