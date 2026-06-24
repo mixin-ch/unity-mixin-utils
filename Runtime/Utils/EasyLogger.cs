@@ -79,5 +79,23 @@ namespace Mixin.Utils
 
             Log(output);
         }
+
+        public static void LogObjectFields(this object obj, FieldInfo[] fields)
+        {
+            if (obj == null)
+            {
+                Log("Object is null.");
+                return;
+            }
+            Type type = obj.GetType();
+            string output = "";
+            output += $"Logging specified fields of <b>{type.Name}</b>\n";
+            foreach (FieldInfo field in fields)
+            {
+                object value = field.GetValue(obj);
+                output += $"{field.Name}: {value}\n";
+            }
+            Log(output);
+        }
     }
 }
