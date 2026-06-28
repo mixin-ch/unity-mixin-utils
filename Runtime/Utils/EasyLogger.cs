@@ -1,5 +1,7 @@
 using System;
+using System.IO;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace Mixin.Utils
@@ -16,45 +18,63 @@ namespace Mixin.Utils
         /// <inheritdoc cref="ColorExtensions.GetMixinColor()"/>
         private static string _mixinColorHex = _mixinColor.ToHex();
 
+        private static string _mixinPrefix = $"<color={_mixinColorHex}>#Mixin</color>";
+
+        public static string GetFormattedMessage(string filePath, string text, Color classColor, Color textColor)
+        {
+            string className = Path.GetFileNameWithoutExtension(filePath);
+            return $"<color={classColor.ToHex()}>[{className}]</color> <color={textColor.ToHex()}>{text}</color>";
+        }
+
         /// <summary>
         /// The easy way to Debug.Log()! <br></br>
         /// You can give a Color as param for colored Output.
         /// </summary>
         /// <param name="text"></param>
-        public static void Log(this string text, Color color)
+        public static void Log(this string text, Color color, [CallerFilePath] string filePath = "")
         {
-            Debug.Log($"<color={_mixinColorHex}>#Mixin </color><color={color.ToHex()}>{text}</color>");
+            Debug.Log($"{GetFormattedMessage(filePath, text, Color.yellow, color)}");
         }
 
         /// <inheritdoc cref="Log(string, Color)"/>
-        public static void Log(this string text)
+        public static void Log(this string text, [CallerFilePath] string filePath = "")
         {
-            Log(text, Color.white);
+            Debug.Log($"{GetFormattedMessage(filePath, text, Color.yellow, Color.white)}");
+        }
+
+        public static void LogWithoutPrefix(this string text)
+        {
+            text.LogWithoutPrefix(Color.white);
+        }
+
+        public static void LogWithoutPrefix(this string text, Color color)
+        {
+            Debug.Log($"<color={color.ToHex()}>{text}</color>");
         }
 
         /// <summary>
         /// Adds loading points to the text.
         /// </summary>
         /// <param name="text"></param>
-        public static void LogProgress(this string text)
+        public static void LogProgress(this string text, [CallerFilePath] string filePath = "")
         {
-            Log(text + "...", Color.gray);
+            Debug.Log($"{GetFormattedMessage(filePath, text, Color.gray, Color.gray)}...");
         }
 
-        public static void LogSuccess(this string text)
+        public static void LogSuccess(this string text, [CallerFilePath] string filePath = "")
         {
-            Log(text, Color.green);
+            Debug.Log($"{GetFormattedMessage(filePath, text, Color.green, Color.white)}");
         }
 
-        public static void LogWarning(this string text)
+        public static void LogWarning(this string text, [CallerFilePath] string filePath = "")
         {
-            Debug.LogWarning($"<color={_mixinColorHex}>#Mixin </color>{text}");
+            Debug.LogWarning($"{GetFormattedMessage(filePath, text, Color.orange, Color.white)}");
         }
 
 
-        public static void LogError(this string text)
+        public static void LogError(this string text, [CallerFilePath] string filePath = "")
         {
-            Debug.LogError($"<color={_mixinColorHex}>#Mixin </color>{text}");
+            Debug.LogError($"{GetFormattedMessage(filePath, text, Color.red, Color.white)}");
         }
 
         public static void LogObject(this object obj)
